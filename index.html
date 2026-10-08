@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Snack Survey</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f4f4f5;
+      color: #18181b;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      margin: 30px auto;
+      background: white;
+      padding: 28px;
+      border-radius: 22px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .subtitle {
+      margin: 0 0 30px;
+      color: #71717a;
+      font-size: 15px;
+    }
+
+    .question {
+      margin: 28px 0;
+    }
+
+    .question h2 {
+      margin: 0 0 13px;
+      font-size: 17px;
+    }
+
+    label {
+      display: block;
+      padding: 14px;
+      margin: 9px 0;
+      border: 1px solid #e4e4e7;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: .15s;
+    }
+
+    label:hover {
+      background: #fafafa;
+      border-color: #bbb;
+    }
+
+    input[type="radio"] {
+      margin-right: 9px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #e4e4e7;
+      border-radius: 13px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input[type="text"]:focus {
+      border-color: #111;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      border: 0;
+      border-radius: 13px;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
+
+    .note {
+      margin-top: 16px;
+      text-align: center;
+      color: #a1a1aa;
+      font-size: 12px;
+    }
+
+    #thanks {
+      display: none;
+      text-align: center;
+      padding: 45px 10px;
+    }
+
+    .success-icon {
+      font-size: 52px;
+      margin-bottom: 12px;
+    }
+
+    #thanks h2 {
+      margin: 0 0 8px;
+    }
+
+    #thanks p {
+      color: #71717a;
+    }
+
+    .error {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- SURVEY -->
+  <div id="survey">
+
+    <h1>🌶️ Snack Survey</h1>
+
+    <p class="subtitle">
+      Help me decide what snacks to sell!
+    </p>
+
+
+    <!-- QUESTION 1 -->
+    <div class="question">
+
+      <h2>1. Which snack would you buy?</h2>
+
+      <label>
+        <input type="radio" name="snack" value="Blue Takis">
+        🔵 Blue Takis
+      </label>
+
+      <label>
+        <input type="radio" name="snack" value="Red Takis">
+        🔴 Red Takis
+      </label>
+
+      <label>
+        <input type="radio" name="snack" value="KitKat">
+        🍫 KitKat
+      </label>
+
+      <label>
+        <input type="radio" name="snack" value="Sour Patch Kids">
+        🍬 Sour Patch Kids
+      </label>
+
+      <label>
+        <input type="radio" name="snack" value="Skittles">
+        🌈 Skittles
+      </label>
+
+    </div>
+
+
+    <!-- QUESTION 2 -->
+    <div class="question">
+
+      <h2>2. What price would you pay?</h2>
+
+      <label>
+        <input type="radio" name="price" value="5 SAR">
+        5 SAR
+      </label>
+
+      <label>
+        <input type="radio" name="price" value="6 SAR">
+        6 SAR
+      </label>
+
+      <label>
+        <input type="radio" name="price" value="7 SAR">
+        7 SAR
+      </label>
+
+      <label>
+        <input type="radio" name="price" value="8+ SAR">
+        8+ SAR
+      </label>
+
+    </div>
+
+
+    <!-- QUESTION 3 -->
+    <div class="question">
+
+      <h2>3. How often would you buy snacks?</h2>
+
+      <label>
+        <input type="radio" name="frequency" value="Every day">
+        Every day
+      </label>
+
+      <label>
+        <input type="radio" name="frequency" value="A few times a week">
+        A few times a week
+      </label>
+
+      <label>
+        <input type="radio" name="frequency" value="Once a week">
+        Once a week
+      </label>
+
+      <label>
+        <input type="radio" name="frequency" value="Occasionally">
+        Occasionally
+      </label>
+
+    </div>
+
+
+    <!-- QUESTION 4 -->
+    <div class="question">
+
+      <h2>4. What other snack should I sell?</h2>
+
+      <input
+        id="other"
+        type="text"
+        maxlength="100"
+        placeholder="Your suggestion..."
+      >
+
+    </div>
+
+
+    <button id="submitButton" onclick="submitSurvey()">
+      Submit Survey
+    </button>
+
+    <div id="error" class="error"></div>
+
+    <p class="note">
+      No name or personal information is collected.
+    </p>
+
+  </div>
+
+
+  <!-- SUCCESS -->
+  <div id="thanks">
+
+    <div class="success-icon">
+      ✅
+    </div>
+
+    <h2>Thanks!</h2>
+
+    <p>
+      Your answer has been recorded.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /*
+    ==============================
+    SUPABASE CONFIGURATION
+    ==============================
+  */
+
+  const SUPABASE_URL =
+    "PASTE_YOUR_PROJECT_URL_HERE";
+
+  const SUPABASE_KEY =
+    "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  /*
+    ==============================
+    SUBMIT SURVEY
+    ==============================
+  */
+
+  async function submitSurvey() {
+
+    const snack =
+      document.querySelector(
+        'input[name="snack"]:checked'
+      );
+
+    const price =
+      document.querySelector(
+        'input[name="price"]:checked'
+      );
+
+    const frequency =
+      document.querySelector(
+        'input[name="frequency"]:checked'
+      );
+
+    const other =
+      document.getElementById("other")
+        .value
+        .trim();
+
+
+    /*
+      Validate required questions
+    */
+
+    if (!snack || !price || !frequency) {
+
+      showError(
+        "Please answer questions 1–3 first."
+      );
+
+      return;
+    }
+
+
+    /*
+      Disable button
+    */
+
+    const button =
+      document.getElementById("submitButton");
+
+    button.disabled = true;
+
+    button.textContent =
+      "Submitting...";
+
+
+    /*
+      Send response to Supabase
+    */
+
+    const { error } =
+      await supabaseClient
+        .from("snack_survey_responses")
+        .insert({
+          snack: snack.value,
+          price: price.value,
+          frequency: frequency.value,
+          other_snack: other || null
+        });
+
+
+    /*
+      Handle error
+    */
+
+    if (error) {
+
+      console.error(error);
+
+      showError(
+        "Something went wrong. Please try again."
+      );
+
+      button.disabled = false;
+
+      button.textContent =
+        "Submit Survey";
+
+      return;
+    }
+
+
+    /*
+      Success
+    */
+
+    document.getElementById("survey")
+      .style.display = "none";
+
+    document.getElementById("thanks")
+      .style.display = "block";
+  }
+
+
+  /*
+    ==============================
+    ERROR MESSAGE
+    ==============================
+  */
+
+  function showError(message) {
+
+    const error =
+      document.getElementById("error");
+
+    error.textContent = message;
+
+    error.style.display = "block";
+  }
+
+</script>
+
+</body>
+</html>
