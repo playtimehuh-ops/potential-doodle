@@ -3,147 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f7f8fc">
-<meta name="description" content="Vote for the snack you want next. A quick anonymous community snack survey.">
-<title>SnackDrop — Your snack, your vote</title>
+<meta name="theme-color" content="#0a0a0b">
+<meta name="description" content="Pick your snack, pick your number, and help build the next Snack Drop.">
+<title>Snack Drop Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,400..800&family=DM+Mono:wght@400;500&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#131c30;--panel2:#19243a;--line:#2c3a54;--text:#f6f7fb;--muted:#a8b4c9;--orange:#ffad5b;--blue:#7bb5ff;--green:#78e4b0}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% 0%,#1b2b4b 0,transparent 40%),radial-gradient(ellipse at 100% 30%,#342344 0,transparent 34%),var(--bg);font-family:'DM Sans',sans-serif;color:var(--text)}button,input{font:inherit}button{cursor:pointer}.shell{max-width:1100px;margin:auto;padding:23px 22px 40px}
-header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:44px}.brand{display:flex;align-items:center;gap:11px;font:700 20px 'Space Grotesk',sans-serif;letter-spacing:-.6px}.logo{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#ffd078,#ff785a);color:#241628;font-weight:900;font-size:21px;box-shadow:0 8px 26px #ff9c4b35}.pill{display:flex;align-items:center;gap:8px;border:1px solid #34415c;border-radius:999px;background:#121b2d;padding:8px 12px;color:#cbd5e7;font-size:11px;font-weight:800;letter-spacing:.4px}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px #78e4b088}
-.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:28px;margin-bottom:28px}.eyebrow{display:flex;align-items:center;gap:9px;color:#ffc27f;font-size:11px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;margin-bottom:15px}.eyebrow:before{content:'';width:22px;height:2px;background:var(--orange)}h1{font:700 clamp(42px,6.4vw,70px)/.98 'Space Grotesk',sans-serif;letter-spacing:-3.5px;margin:0 0 18px}h1 span{color:var(--orange)}.intro{max-width:475px;margin:0;color:var(--muted);font-size:15px;line-height:1.8}.hero-art{min-height:230px;display:grid;place-items:center}.orbit{width:min(100%,360px);aspect-ratio:1;position:relative;border:1px solid #34425e;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#283650 0,#17233a 46%,#10182b 72%);box-shadow:inset 0 0 65px #070c18,0 25px 80px #0003}.orbit:before,.orbit:after{content:'';position:absolute;inset:13%;border:1px dashed #4a5a78;border-radius:50%}.orbit:after{inset:27%;border-style:solid;opacity:.4}.pepper{font-size:100px;filter:drop-shadow(0 14px 18px #0008);transform:rotate(-12deg);z-index:1;display:grid;place-items:center}.pepper svg{width:100px;height:100px;display:block}.food svg,.feature-icon svg{width:22px;height:22px;display:block}.float svg{width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px}.float{position:absolute;z-index:2;padding:9px 12px;border:1px solid #46536c;background:#121b2d;border-radius:12px;font-size:11px;font-weight:800;box-shadow:0 12px 26px #0004}.float.a{top:12%;left:-1%}.float.b{right:-2%;top:28%}.float.c{bottom:9%;left:10%}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px;align-items:start}.card{border:1px solid #2a3852;border-radius:21px;background:linear-gradient(145deg,#151f34f7,#101829f7);box-shadow:0 22px 55px #0002}.form-card{padding:25px}.step{display:flex;align-items:center;gap:11px;margin-bottom:8px}.num{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:#263550;color:#9cc8ff;font-size:12px;font-weight:800}.step h2,.side h3{font:700 18px 'Space Grotesk',sans-serif;letter-spacing:-.4px;margin:0}.hint{margin:0 0 17px 42px;color:var(--muted);font-size:12px;line-height:1.6}.snacks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:25px}.snack{min-height:76px;display:flex;align-items:center;gap:11px;text-align:left;padding:12px;border:1px solid #35425b;border-radius:14px;background:#151f33;color:var(--text);transition:.16s}.snack:hover{border-color:#748eb5;transform:translateY(-1px)}.snack[aria-pressed=true]{border-color:var(--orange);background:linear-gradient(135deg,#3a2c2e,#20263b);box-shadow:inset 0 0 0 1px #ffad5b30}.food{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;background:#26334b;font-size:22px}.snack strong{display:block;font-size:13px;margin-bottom:4px}.snack small{color:var(--muted);font-size:10px}.check{margin-left:auto;width:18px;height:18px;flex:0 0 18px;border:1px solid #56637b;border-radius:50%;display:grid;place-items:center;font-size:11px;color:transparent}.snack[aria-pressed=true] .check{background:var(--orange);border-color:var(--orange);color:#211425}.field{margin-bottom:23px}.label{display:block;font-size:13px;font-weight:800;margin-bottom:11px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid #35425b;border-radius:10px;background:#151f33;color:#d8dfec;padding:10px 14px;font-size:12px;font-weight:700}.choice:hover{border-color:#7588a7}.choice[aria-pressed=true]{border-color:var(--blue);background:#213653;color:white;box-shadow:inset 0 0 0 1px #7bb5ff22}.other{width:100%;margin-top:10px;padding:12px 13px;border:1px solid #35425b;border-radius:11px;background:#0d1525;color:var(--text);outline:none}.other:focus{border-color:var(--blue)}.other::placeholder{color:#75829a}.submit-row{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.submit{border:0;border-radius:12px;padding:14px 19px;background:linear-gradient(135deg,#ffd078,#ff8859);color:#28182a;font-weight:900;box-shadow:0 8px 24px #ff9d4c26;transition:.15s}.submit:hover{filter:brightness(1.06);transform:translateY(-1px)}.submit:disabled{opacity:.6;cursor:wait;transform:none}.privacy{max-width:225px;color:#8996ad;font-size:10px;line-height:1.5}.status{display:none;margin-top:14px;padding:12px 13px;border-radius:11px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#14352d;border:1px solid #28624e;color:#b8f7d5}.status.error{background:#3a2029;border:1px solid #71404d;color:#ffc4cf}.status.info{background:#1c2c47;border:1px solid #3b5782;color:#cbdfff}
-.side{padding:21px}.side h3{margin-bottom:9px}.side-intro{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 18px}.feature{display:flex;gap:11px;padding:13px 0;border-top:1px solid #2a3650}.feature-icon{width:33px;height:33px;flex:0 0 33px;display:grid;place-items:center;border-radius:10px;background:#26334b;font-size:15px}.feature strong{display:block;font-size:12px;margin:1px 0 4px}.feature p{margin:0;color:var(--muted);font-size:10px;line-height:1.6}.foot{display:flex;justify-content:space-between;gap:14px;margin-top:20px;padding:0 4px;color:#74829b;font-size:10px}.foot a{color:#9eacc3;text-decoration:none}.foot a:hover{color:white}
-@media(max-width:760px){.shell{padding:16px 13px 28px}header{margin-bottom:27px}.hero{grid-template-columns:1fr;gap:0}.hero-art{min-height:210px}.orbit{width:245px}.pepper{font-size:75px}.float{font-size:9px;padding:7px 9px}.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:8px 17px}.side h3,.side-intro{grid-column:1/-1}.feature{padding:10px 0}.form-card{padding:19px}h1{letter-spacing:-2.5px}.foot{flex-direction:column}}@media(max-width:430px){.snacks{grid-template-columns:1fr}.snack{min-height:69px}.side{display:block}.pill{font-size:9px;padding:7px 9px}.brand{font-size:18px}}
-
-/* Light UI refresh: keep the existing survey logic and Supabase integration intact. */
-:root{color-scheme:light;--bg:#f6f7fb;--panel:#ffffff;--panel2:#f0f2f7;--line:#e1e5ee;--text:#202536;--muted:#737b8e;--orange:#ef8751;--blue:#6478e8;--green:#229b73}
-body{background:radial-gradient(ellipse at 10% 0%,#fff0e5 0,transparent 36%),radial-gradient(ellipse at 100% 18%,#eceeff 0,transparent 34%),#f7f8fc;color:var(--text)}
-.logo{background:linear-gradient(135deg,#ffce9a,#f18a61);color:#422b2a;box-shadow:0 8px 24px #e99a6830}
-.pill{border-color:#e1e5ee;background:#fff;color:#667085;box-shadow:0 3px 12px #27314a08}
-.hero .eyebrow{color:#d97745}
-h1 span{color:#e77c48}
-.orbit{border-color:#e4e6ef;background:radial-gradient(circle,#fff 0,#f5f6fc 58%,#eceef8 100%);box-shadow:inset 0 0 50px #dce1f433,0 24px 70px #29345b10}
-.orbit:before,.orbit:after{border-color:#d4d9e7}
-.float{border-color:#e3e5ee;background:#fff;color:#50586c;box-shadow:0 12px 26px #27314a12}
-.card{border:1px solid #e6e8f0;background:rgba(255,255,255,.94);box-shadow:0 18px 50px #29345b0b}
-.num{background:#edf0ff;color:#596de0}
-.snack{border-color:#e4e7ef;background:#fff;color:#252a3b}
-.snack:hover{border-color:#b8c1e8;box-shadow:0 5px 18px #29345b0a}
-.snack[aria-pressed=true]{border-color:#ee9a6b;background:linear-gradient(135deg,#fff4eb,#fffaf6);box-shadow:inset 0 0 0 1px #f0a07122}
-.food{background:#f1f3f9;color:#353b50}
-.check{border-color:#c8cedb}
-.snack[aria-pressed=true] .check{background:#ed8a54;border-color:#ed8a54;color:#fff}
-.choice{border-color:#e0e4ed;background:#fff;color:#596174}
-.choice:hover{border-color:#b6bfdc}
-.choice[aria-pressed=true]{border-color:#7c8be7;background:#f0f2ff;color:#3546b0;box-shadow:inset 0 0 0 1px #7c8be722}
-.other{border-color:#e0e4ed;background:#fbfcff;color:#252a3b}
-.other:focus{border-color:#8996ee;box-shadow:0 0 0 3px #8996ee1c}
-.other::placeholder{color:#9aa1b1}
-.submit{background:linear-gradient(135deg,#ffc995,#f28c61);color:#402628;box-shadow:0 8px 24px #e99a6826}
-.privacy{color:#858da0}
-.feature{border-top-color:#eceef4}
-.feature-icon{background:#f0f2ff;color:#596de0}
-.status.ok{background:#ecf9f2;border-color:#c1ead3;color:#24724e}
-.status.error{background:#fff0f1;border-color:#f1c7cc;color:#a43d4b}
-.status.info{background:#eef3ff;border-color:#d2ddff;color:#435ca3}
-footer{color:#858da0}
-@media(max-width:700px){header{margin-bottom:28px}.hero{gap:10px}.orbit{max-width:290px}.form-card{padding:19px}.side{padding:18px}}
-
+:root{--ink:#0a0a0b;--panel:#151518;--fg:#f7f5f0;--muted:#8d8f96;--red:#ff2e2e;--blue:#2f6bff;--line:#2a2a30;--font-display:"Anton","Impact","Arial Narrow",sans-serif;--font-body:"Archivo","Helvetica Neue",Arial,sans-serif;--font-mono:"DM Mono",ui-monospace,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--ink);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;background-image:radial-gradient(circle at 1px 1px,#232329 1px,transparent 0);background-size:22px 22px;overflow-x:hidden}
+button,input{font:inherit}.wrap{max-width:560px;margin:0 auto;padding:28px 18px 56px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}.badge{display:inline-block;background:var(--red);color:var(--ink);padding:4px 10px;font-weight:500;transform:rotate(-3deg)}
+.hero h1{font-family:var(--font-display);font-weight:400;text-transform:uppercase;line-height:.86;letter-spacing:.005em;margin:0;font-size:clamp(4.4rem,30vw,9.5rem);text-wrap:balance}.hero h1 .snack{color:var(--red);display:block}.hero h1 .drop{display:block;color:transparent;-webkit-text-stroke:2px var(--fg)}.hero h1 .dot{color:var(--blue)}.lede{margin:18px 0 0;max-width:34ch;font-size:1.05rem;color:var(--muted)}
+.panel{position:relative;background:var(--panel);border:2px solid var(--fg);box-shadow:6px 6px 0 var(--fg);padding:22px 18px 24px;margin:34px 0 0}.panel-title{display:flex;align-items:baseline;gap:10px;font-family:var(--font-display);font-size:1.9rem;text-transform:uppercase;line-height:1;margin:0 0 16px;padding:0;width:100%}.panel-title .num{font-family:var(--font-mono);font-size:13px;color:var(--blue);letter-spacing:.08em}fieldset{border:0;padding:0;margin:0;min-width:0}legend{padding:0;width:100%}
+.name-label{display:block;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}input[type=text]{display:block;width:100%;min-width:0;font-family:var(--font-body);font-size:1.1rem;font-weight:600;color:var(--fg);background:var(--ink);border:2px solid var(--fg);border-radius:0;padding:14px}input[type=text]::placeholder{color:#55565d}input[type=text]:focus-visible,button:focus-visible,.card:has(input:focus-visible),.money:has(input:focus-visible){outline:3px solid var(--blue);outline-offset:3px}
+.snacks{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;padding:12px 12px 14px;background:var(--ink);border:2px solid var(--fg);cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,background .12s;box-shadow:4px 4px 0 var(--line)}.card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--fg)}.card input,.money input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}.card:has(input:checked){background:var(--red);color:var(--ink);box-shadow:6px 6px 0 var(--blue);transform:translate(-2px,-2px) rotate(-1.2deg)}.card:has(input:checked) .card-name{color:var(--ink)}.card:has(input:checked) .tick{opacity:1;transform:scale(1)}
+.swatch{display:block;width:100%;aspect-ratio:4/3;max-width:100%}.swatch.red{background:var(--red)}.swatch.blue{background:var(--blue)}.swatch.kit{background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(0,0,0,.25) 14px 16px),var(--fg)}.swatch.custom{background:transparent;border:2px dashed var(--muted);display:grid;place-items:center;font-family:var(--font-display);font-size:3.4rem;line-height:1;color:var(--muted)}.card:has(input:checked) .swatch.custom{color:var(--ink);border-color:var(--ink)}.card:has(input:checked) .swatch.kit{background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(0,0,0,.25) 14px 16px),var(--ink)}
+.card-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.card-name{font-family:var(--font-display);font-size:1.45rem;text-transform:uppercase;line-height:1}.tick{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--red);display:grid;place-items:center;font-weight:800;font-size:15px;opacity:0;transform:scale(.4);transition:opacity .15s,transform .15s}#custom-wrap{margin-top:16px}#custom-wrap .name-label{color:var(--blue)}
+.money-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.money{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:16px 4px 14px;background:var(--ink);border:2px solid var(--fg);box-shadow:4px 4px 0 var(--line);cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,background .12s}.money:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--fg)}.money-amt{font-family:var(--font-display);font-size:clamp(2.2rem,11vw,3.4rem);line-height:.9;font-variant-numeric:tabular-nums}.money-unit{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}.money:has(input:checked){background:var(--blue);color:var(--fg);border-color:var(--fg);box-shadow:6px 6px 0 var(--red);transform:translate(-2px,-2px) rotate(-1.5deg)}.money:has(input:checked) .money-unit{color:var(--fg)}
+.error{min-height:1.4em;margin:22px 0 10px;color:var(--red);font-family:var(--font-mono);font-size:14px;font-weight:500}.primary{width:100%;font-family:var(--font-display);font-size:2.1rem;text-transform:uppercase;letter-spacing:.02em;color:var(--ink);background:var(--red);border:2px solid var(--fg);box-shadow:6px 6px 0 var(--blue);padding:14px 16px 10px;cursor:pointer;transition:transform .1s,box-shadow .1s}.primary:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--blue)}.primary:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--blue)}.primary:disabled{opacity:.65;cursor:wait}
+.result{margin-top:34px;background:var(--red);color:var(--ink);border:2px solid var(--fg);box-shadow:8px 8px 0 var(--blue);padding:26px 20px 24px;transform:rotate(-1deg)}.result:focus{outline:3px solid var(--blue);outline-offset:4px}.result h2{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:clamp(3.4rem,16vw,5.4rem);line-height:.88;margin:0 0 14px}.result p{margin:0 0 20px;font-size:1.05rem;font-weight:600}.ghost{font-family:var(--font-mono);font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);background:var(--fg);border:2px solid var(--ink);padding:12px 18px;cursor:pointer}.ghost:hover{background:var(--ink);color:var(--fg)}.error:empty{margin-bottom:10px}
+[hidden]{display:none!important}
+@media(max-width:380px){.wrap{padding-inline:14px}.panel{padding:20px 13px}.snacks{gap:10px}.card{padding:9px}.card-name{font-size:1.22rem}.money-grid{gap:7px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header><div class="brand"><div class="logo">S</div>SnackDrop</div><div class="pill"><span class="dot"></span> COMMUNITY SNACK VOTE</div></header>
-<section class="hero">
-<div><div class="eyebrow">Your cravings, your call</div><h1>What snack<br>should we <span>drop?</span></h1><p class="intro">Help pick the next snack people actually want. Choose your favourite, tell us what price feels fair, and send your vote. It takes less than a minute.</p></div>
-<div class="hero-art" aria-hidden="true"><div class="orbit"><span class="float a"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c1 4-3 5-2 8 1-1 2-2 2-3 4 3 5 6 3 10a6 6 0 0 1-11-3c0-3 2-5 4-7 0 3 1 4 2 4 0-3 1-6 2-9Z"/></svg> Most wanted?</span><span class="float b">Your vote counts</span><span class="float c">Snack radar · ON</span><div class="pepper"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffad5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4c1-2 3-2 5-1-1 2-2 3-5 3"/><path d="M15 5c-2 1-3 3-3 5 0 3-2 7-6 9-2 1-4 0-4-2 0-4 4-7 7-8 2-1 3-2 3-4"/><path d="M8 15l-2 2"/></svg></div></div></div>
-</section>
-<main class="layout">
-<form class="card form-card" id="surveyForm">
-<div class="step"><div class="num">01</div><h2>Pick your snack</h2></div><p class="hint">If we could stock just one, which would you choose?</p>
-<div class="snacks" id="snackChoices">
-<button class="snack" type="button" data-snack="Blue Takis" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#7bb5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20S3 14 3 8a4 4 0 0 1 7-2l2 2 2-2a4 4 0 0 1 7 2c0 6-9 12-9 12Z" /></svg></span><span><strong>Blue Takis</strong><small>Blue Heat · spicy</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Red Takis" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffad5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4-3 5-2 8 1-1 2-2 2-3 4 3 5 6 3 10a6 6 0 0 1-11-3c0-3 2-5 4-7 0 3 1 4 2 4 0-3 1-6 2-9Z"/></svg></span><span><strong>Red Takis</strong><small>Fuego · classic heat</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="KitKat" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#c99a75" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v6m5 0v6m-5 0v6"/></svg></span><span><strong>KitKat</strong><small>Chocolate break</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Sour Patch Kids" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffad5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 9-2-3 4 1 3-3 3 3 3-3 3 3 4-1-2 3v6l2 3-4-1-3 3-3-3-3 3-3-3-4 1 2-3Z"/><path d="M8 8v8m8-8v8"/></svg></span><span><strong>Sour Patch Kids</strong><small>Sour then sweet</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Skittles" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#78e4b0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16a9 9 0 0 1 18 0"/><path d="M7 16a5 5 0 0 1 10 0"/><path d="M11 16a1 1 0 0 1 2 0"/></svg></span><span><strong>Skittles</strong><small>Taste the rainbow</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Other" aria-pressed="false"><span class="food"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffad5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></svg></span><span><strong>Something else</strong><small>Suggest a snack</small></span><span class="check">✓</span></button>
-</div>
-<div class="field"><span class="label">02 · What price feels fair?</span><div class="choices" id="priceChoices"><button class="choice" type="button" data-price="5 SAR" aria-pressed="false">5 SAR</button><button class="choice" type="button" data-price="6 SAR" aria-pressed="false">6 SAR</button><button class="choice" type="button" data-price="7 SAR" aria-pressed="false">7 SAR</button><button class="choice" type="button" data-price="8+ SAR" aria-pressed="false">8+ SAR</button></div></div>
-<div class="field"><span class="label">03 · How often would you buy it?</span><div class="choices" id="frequencyChoices"><button class="choice" type="button" data-frequency="Every day" aria-pressed="false">Every day</button><button class="choice" type="button" data-frequency="A few times a week" aria-pressed="false">A few times a week</button><button class="choice" type="button" data-frequency="Once a week" aria-pressed="false">Once a week</button><button class="choice" type="button" data-frequency="Occasionally" aria-pressed="false">Sometimes</button></div></div>
-<div class="field" id="otherField" hidden><label class="label" for="otherSnack">What snack do you have in mind?</label><input class="other" id="otherSnack" maxlength="100" placeholder="e.g. Oreo Minis, Pringles..."></div>
-<div class="submit-row"><button class="submit" id="submitButton" type="submit">Send my vote ↗</button><div class="privacy">No name, email, or phone number needed.</div></div>
-<div class="status" id="status" role="status" aria-live="polite"></div>
-</form>
-<aside class="card side">
-<h3>Small vote. Big snack energy.</h3><p class="side-intro">This poll helps choose what to buy before stocking up. Vote for what you would genuinely pick — every opinion helps.</p>
-<div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#78e4b0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div><strong>Real opinions only</strong><p>Choose what you would actually buy.</p></div></div>
-<div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#7bb5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg></div><div><strong>No personal details</strong><p>The survey does not ask who you are.</p></div></div>
-<div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffad5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10m5 10V4m5 16v-7m5 7V7"/></svg></div><div><strong>Votes in one place</strong><p>Responses are stored centrally after Supabase is connected.</p></div></div>
-</aside>
-</main>
-<footer class="foot"><span>SNACKDROP · COMMUNITY PICKER</span><span>Made for snack people · <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase dashboard ↗</a></span></footer>
+<div class="wrap">
+  <div class="top"><span>Snack Drop / Survey 001</span><span class="badge">Open now</span></div>
+  <header class="hero">
+    <h1><span class="snack">Snack</span><span class="drop">Drop<span class="dot">.</span></span></h1>
+    <p class="lede">Pick your snack, pick your number, and we'll build the drop around you.</p>
+  </header>
+  <form id="form" class="panel" novalidate>
+    <h2 class="panel-title"><span class="num">01</span>Who's this for</h2>
+    <label class="name-label" for="name">Your name</label>
+    <input type="text" id="name" name="name" autocomplete="name" placeholder="e.g. Sara" maxlength="40" required>
+    <fieldset style="margin-top:30px">
+      <legend class="panel-title"><span class="num">02</span>Pick your snack</legend>
+      <div class="snacks">
+        <label class="card"><input type="radio" name="snack" value="redtakis"><span class="swatch red" aria-hidden="true"></span><span class="card-row"><span class="card-name">Red Takis</span><span class="tick" aria-hidden="true">✓</span></span></label>
+        <label class="card"><input type="radio" name="snack" value="bluetakis"><span class="swatch blue" aria-hidden="true"></span><span class="card-row"><span class="card-name">Blue Takis</span><span class="tick" aria-hidden="true">✓</span></span></label>
+        <label class="card"><input type="radio" name="snack" value="kitkat"><span class="swatch kit" aria-hidden="true"></span><span class="card-row"><span class="card-name">KitKat</span><span class="tick" aria-hidden="true">✓</span></span></label>
+        <label class="card"><input type="radio" name="snack" value="custom"><span class="swatch custom" aria-hidden="true">+</span><span class="card-row"><span class="card-name">Custom</span><span class="tick" aria-hidden="true">✓</span></span></label>
+      </div>
+      <div id="custom-wrap" hidden><label class="name-label" for="custom">Which snack?</label><input type="text" id="custom" name="custom" placeholder="Type the snack you want" maxlength="60"></div>
+    </fieldset>
+    <fieldset style="margin-top:30px">
+      <legend class="panel-title"><span class="num">03</span>What's great for you</legend>
+      <div class="money-grid" role="radiogroup" aria-label="Budget in SAR">
+        <label class="money"><input type="radio" name="budget" value="3"><span class="money-amt">3</span><span class="money-unit">SAR</span></label>
+        <label class="money"><input type="radio" name="budget" value="5"><span class="money-amt">5</span><span class="money-unit">SAR</span></label>
+        <label class="money"><input type="radio" name="budget" value="6"><span class="money-amt">6</span><span class="money-unit">SAR</span></label>
+        <label class="money"><input type="radio" name="budget" value="7"><span class="money-amt">7</span><span class="money-unit">SAR</span></label>
+      </div>
+    </fieldset>
+    <p class="error" id="error" role="alert" aria-live="polite"></p>
+    <button type="submit" class="primary" id="submit">Send my drop</button>
+  </form>
+  <section id="result" class="result" hidden tabindex="-1"><h2>Got it.</h2><p id="result-text"></p><button type="button" class="ghost" id="again">Submit another</button></section>
 </div>
 <script>
-/* Browser-safe configuration only. Never put a service_role or secret key here. */
-const SUPABASE_URL = "https://jtstdajaaasucialvsfs.supabase.co";
-const SUPABASE_KEY = "sb_publishable_1O9wO2dY_ZFFfdPFGaLeMA_3oaW2Hs-";
-const form = document.getElementById("surveyForm");
-const statusBox = document.getElementById("status");
-const submitButton = document.getElementById("submitButton");
-let selectedSnack = "", selectedPrice = "", selectedFrequency = "";
-function showStatus(message, kind) { statusBox.textContent = message; statusBox.className = "status show " + kind; }
-function choose(container, selector, key, value) {
-  container.querySelectorAll(selector).forEach(el => el.setAttribute("aria-pressed", String(el.dataset[key] === value)));
-}
-document.querySelectorAll("[data-snack]").forEach(button => button.addEventListener("click", () => {
-  selectedSnack = button.dataset.snack;
-  choose(document.getElementById("snackChoices"), "[data-snack]", "snack", selectedSnack);
-  document.getElementById("otherField").hidden = selectedSnack !== "Other";
-  if (selectedSnack === "Other") document.getElementById("otherSnack").focus();
-}));
-document.querySelectorAll("[data-price]").forEach(button => button.addEventListener("click", () => {
-  selectedPrice = button.dataset.price;
-  choose(document.getElementById("priceChoices"), "[data-price]", "price", selectedPrice);
-}));
-document.querySelectorAll("[data-frequency]").forEach(button => button.addEventListener("click", () => {
-  selectedFrequency = button.dataset.frequency;
-  choose(document.getElementById("frequencyChoices"), "[data-frequency]", "frequency", selectedFrequency);
-}));
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-  if (!selectedSnack || !selectedPrice || !selectedFrequency) {
-    showStatus("Choose a snack, a price, and how often you would buy it first.", "error"); return;
-  }
-  const otherSnack = document.getElementById("otherSnack").value.trim();
-  if (selectedSnack === "Other" && !otherSnack) {
-    showStatus("Tell us which snack you would like to see.", "error");
-    document.getElementById("otherSnack").focus(); return;
-  }
-  if (SUPABASE_URL.includes("PASTE_YOUR") || SUPABASE_KEY.includes("PASTE_YOUR")) {
-    showStatus("The site is ready, but its database still needs setup. Follow the Supabase steps in README.md, then replace the two configuration placeholders in index.html.", "info"); return;
-  }
-  if (!window.supabase) { showStatus("The database library did not load. Check your connection and try again.", "error"); return; }
-  submitButton.disabled = true; submitButton.textContent = "Sending vote…";
-  try {
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const { error } = await client.from("snack_survey_responses").insert({
-      snack: selectedSnack, price: selectedPrice, frequency: selectedFrequency, other_snack: selectedSnack === "Other" ? otherSnack : null
-    });
-    if (error) throw error;
-    showStatus("Vote received! Thanks for helping pick the next snack. 🎉", "ok");
-    form.reset(); selectedSnack = selectedPrice = selectedFrequency = "";
-    document.querySelectorAll("[aria-pressed=true]").forEach(el => el.setAttribute("aria-pressed", "false"));
-    document.getElementById("otherField").hidden = true;
-  } catch (error) {
-    console.error("SnackDrop submission failed:", error);
-    showStatus("We could not save your vote. Check the Supabase setup and table permissions, then try again.", "error");
-  } finally { submitButton.disabled = false; submitButton.textContent = "Send my vote ↗"; }
-});
+(function(){
+  const SUPABASE_URL="https://jtstdajaaasucialvsfs.supabase.co";
+  const SUPABASE_KEY="sb_publishable_1O9wO2dY_ZFFfdPFGaLeMA_3oaW2Hs-";
+  const form=document.getElementById("form"),nameInput=document.getElementById("name"),customWrap=document.getElementById("custom-wrap"),customInput=document.getElementById("custom"),err=document.getElementById("error"),result=document.getElementById("result"),resultText=document.getElementById("result-text"),again=document.getElementById("again"),submit=document.getElementById("submit");
+  const LABELS={redtakis:"Red Takis",bluetakis:"Blue Takis",kitkat:"KitKat"};
+  form.addEventListener("change",e=>{if(e.target.name==="snack"){customWrap.hidden=e.target.value!=="custom";if(!customWrap.hidden)customInput.focus();}});
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();err.textContent="";
+    const name=nameInput.value.trim(),pick=form.querySelector('input[name="snack"]:checked'),budget=form.querySelector('input[name="budget"]:checked');
+    if(!name){err.textContent="Add your name so we know who to thank.";nameInput.focus();return;}
+    if(!pick){err.textContent="Pick a snack to continue.";return;}
+    let snack;
+    if(pick.value==="custom"){snack=customInput.value.trim();if(!snack){err.textContent="Tell us which snack you mean.";customInput.focus();return;}}
+    else snack=LABELS[pick.value];
+    if(!budget){err.textContent="Choose 3, 5, 6 or 7 SAR.";return;}
+    if(!window.supabase){err.textContent="The database library didn't load. Check your connection and try again.";return;}
+    submit.disabled=true;submit.textContent="Sending drop…";
+    try{
+      const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      const {error}=await client.from("snack_survey_responses").insert({snack:pick.value==="custom"?"Other":pick.value,price:budget.value+" SAR",frequency:"Not specified",other_snack:pick.value==="custom"?snack:null});
+      if(error)throw error;
+      resultText.textContent=name+", you want "+snack+", and "+budget.value+" SAR is your number.";
+      form.hidden=true;result.hidden=false;result.focus();
+    }catch(error){
+      console.error("SnackDrop submission failed:",error);
+      err.textContent="We couldn't save your drop. Please try again in a moment.";
+    }finally{submit.disabled=false;submit.textContent="Send my drop";}
+  });
+  again.addEventListener("click",()=>{form.reset();customWrap.hidden=true;result.hidden=true;form.hidden=false;err.textContent="";nameInput.focus();});
+})();
 </script>
 </body>
 </html>
