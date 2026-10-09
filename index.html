@@ -3,112 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1020">
-<meta name="description" content="Vote for the snack you want next. A quick anonymous community snack survey.">
-<title>SnackDrop — Your snack, your vote</title>
+<meta name="theme-color" content="#f7f5ef">
+<meta name="description" content="Help choose the next snack. Cast your anonymous SnackDrop vote.">
+<title>SnackDrop — Choose the next obsession</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{color-scheme:light;--paper:#f7f5ef;--ink:#24251f;--muted:#74766c;--line:#e4e0d6;--card:#fffefa;--orange:#f16c42;--blue:#245b9b;--soft:#f2eee5;--green:#237b56}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--paper);font-family:'DM Sans',sans-serif;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}.shell{max-width:1040px;margin:0 auto;padding:24px 24px 36px}
-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:48px}.brand{display:flex;align-items:center;gap:10px;font:700 20px 'Space Grotesk',sans-serif;letter-spacing:-.7px}.logo{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:var(--orange);color:white;font-weight:900;font-size:20px}.pill{display:flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:#56594f;background:#fffdf8;font-size:10px;font-weight:800;letter-spacing:.7px}.dot{width:7px;height:7px;background:#42986d;border-radius:50%}
-.hero{display:grid;grid-template-columns:1fr 310px;gap:35px;align-items:center;margin-bottom:35px}.eyebrow{display:flex;align-items:center;gap:8px;color:#c4512e;text-transform:uppercase;letter-spacing:1.5px;font-size:10px;font-weight:800;margin-bottom:14px}.eyebrow:before{content:'';width:20px;height:2px;background:var(--orange)}h1{font:700 clamp(42px,6vw,66px)/1 'Space Grotesk',sans-serif;letter-spacing:-3.4px;margin:0 0 17px}h1 span{color:var(--orange)}.intro{max-width:470px;margin:0;color:#67695f;font-size:15px;line-height:1.8}.hero-art{display:grid;place-items:center;min-height:230px}.orbit{width:225px;aspect-ratio:1;position:relative;display:grid;place-items:center;border-radius:50%;background:#f0e5d2;border:1px solid #e7d6bd}.orbit:before{content:'';position:absolute;inset:15px;border:1px dashed #d4bea0;border-radius:50%}.orbit:after{content:'SNACK BREAK';position:absolute;bottom:26px;font-size:9px;font-weight:800;letter-spacing:2px;color:#9b7450}.pepper{font-size:84px;transform:rotate(-10deg);z-index:1}.float{position:absolute;z-index:2;padding:8px 10px;border:1px solid #e5ded0;background:#fffdf8;border-radius:8px;font-size:10px;font-weight:800;color:#565248}.float.a{top:10%;left:-22%}.float.b{right:-26%;top:31%}.float.c{bottom:13%;left:-13%}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:18px;align-items:start}.card{border:1px solid var(--line);border-radius:16px;background:var(--card)}.form-card{padding:25px}.step{display:flex;align-items:center;gap:11px;margin-bottom:8px}.num{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#f8e8df;color:#b74d2e;font-size:11px;font-weight:800}.step h2,.side h3{font:700 18px 'Space Grotesk',sans-serif;letter-spacing:-.4px;margin:0}.hint{margin:0 0 17px 41px;color:var(--muted);font-size:12px;line-height:1.6}.snacks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:25px}.snack{min-height:72px;display:flex;align-items:center;gap:11px;text-align:left;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fffefa;color:var(--ink);transition:border-color .15s,background .15s}.snack:hover{border-color:#c4b9a7;background:#fff}.snack[aria-pressed=true]{border-color:var(--orange);background:#fff4ed;box-shadow:inset 0 0 0 1px #f16c4230}.food{width:39px;height:39px;flex:0 0 39px;border-radius:10px;display:grid;place-items:center;background:var(--soft);font-size:21px}.snack strong{display:block;font-size:13px;margin-bottom:4px}.snack small{color:var(--muted);font-size:10px}.check{margin-left:auto;width:18px;height:18px;flex:0 0 18px;border:1px solid #d6d1c7;border-radius:50%;display:grid;place-items:center;font-size:11px;color:transparent}.snack[aria-pressed=true] .check{background:var(--orange);border-color:var(--orange);color:white}.field{margin-bottom:22px}.label{display:block;font-size:13px;font-weight:800;margin-bottom:11px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid var(--line);border-radius:9px;background:#fffefa;color:#4b4d45;padding:10px 14px;font-size:12px;font-weight:700}.choice:hover{border-color:#b9b1a3}.choice[aria-pressed=true]{border-color:var(--blue);background:#edf4fc;color:#174879;box-shadow:inset 0 0 0 1px #245b9b16}.other{width:100%;margin-top:10px;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);outline:none}.other:focus{border-color:var(--blue)}.other::placeholder{color:#99988f}.submit-row{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.submit{border:0;border-radius:10px;padding:14px 19px;background:var(--orange);color:white;font-weight:800;transition:background .15s}.submit:hover{background:#d95c35}.submit:disabled{opacity:.6;cursor:wait}.privacy{max-width:220px;color:#85867d;font-size:10px;line-height:1.5}.status{display:none;margin-top:14px;padding:12px 13px;border-radius:10px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#e9f5ed;border:1px solid #c9e5d2;color:#226443}.status.error{background:#fff0ee;border:1px solid #f0cbc5;color:#a33d30}.status.info{background:#edf4fc;border:1px solid #cdddf2;color:#244f7d}
-.side{padding:21px}.side h3{margin-bottom:9px}.side-intro{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 18px}.feature{display:flex;gap:11px;padding:13px 0;border-top:1px solid var(--line)}.feature-icon{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:9px;background:var(--soft);font-size:15px}.feature strong{display:block;font-size:12px;margin:1px 0 4px}.feature p{margin:0;color:var(--muted);font-size:10px;line-height:1.6}.foot{display:flex;justify-content:space-between;gap:14px;margin-top:20px;padding:0 4px;color:#85867d;font-size:10px}.foot a{color:#64675e;text-decoration:underline;text-decoration-color:#cbc5b9;text-underline-offset:3px}.foot a:hover{color:var(--orange)}
-@media(max-width:760px){.shell{padding:16px 13px 28px}header{margin-bottom:28px}.hero{grid-template-columns:1fr;gap:8px}.hero-art{min-height:190px}.orbit{width:195px}.pepper{font-size:72px}.float{font-size:9px;padding:7px 8px}.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:8px 17px}.side h3,.side-intro{grid-column:1/-1}.feature{padding:10px 0}.form-card{padding:19px}h1{letter-spacing:-2.5px}.foot{flex-direction:column}}@media(max-width:430px){.snacks{grid-template-columns:1fr}.snack{min-height:68px}.side{display:block}.pill{font-size:9px;padding:7px 9px}.brand{font-size:18px}}
+:root{color-scheme:light;--night:#f7f5ef;--night2:#efe9de;--panel:#fffefa;--line:#e4e0d6;--paper:#24251f;--muted:#74766c;--lime:#f16c42;--pink:#c96b4c;--cyan:#245b9b;--white:#24251f}
+*{box-sizing:border-box}html{min-height:100%;background:var(--night)}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 80% 12%,#f2eee5 0,transparent 33%),radial-gradient(ellipse at 3% 92%,#f2eee5 0,transparent 35%),var(--night);color:var(--paper);font-family:'Space Grotesk',sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}.wrap{max-width:1440px;min-height:100vh;margin:auto;padding:24px 34px 18px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:700;letter-spacing:-1px}.logo{width:42px;height:42px;display:grid;place-items:center;background:var(--lime);color:var(--night);border-radius:14px;font-size:24px;font-weight:700;transform:rotate(-6deg);box-shadow:4px 4px 0 var(--pink)}.brand span{color:var(--lime)}.top-right{display:flex;align-items:center;gap:10px;color:var(--muted);font:10px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase}.live-dot{width:8px;height:8px;background:var(--lime);border-radius:50%;box-shadow:0 0 14px #f16c4280}
+.layout{flex:1;display:grid;grid-template-columns:minmax(260px,.75fr) minmax(0,1.45fr);gap:clamp(30px,7vw,100px);align-items:center;padding:clamp(36px,7vh,85px) 0 40px}
+.intro{align-self:center}.eyebrow{display:flex;align-items:center;gap:9px;font:11px 'DM Mono',monospace;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:22px}.eyebrow:before{content:'';height:1px;width:28px;background:var(--cyan)}h1{font-size:clamp(54px,7vw,100px);line-height:.86;letter-spacing:-.085em;margin:0;font-weight:700}h1 .outline{color:transparent;-webkit-text-stroke:1.5px var(--paper)}h1 .lime{color:var(--lime)}.intro-copy{font-size:15px;line-height:1.85;color:var(--muted);max-width:350px;margin:25px 0 0}.intro-copy b{color:var(--paper);font-weight:600}.orbit-wrap{position:relative;height:135px;margin-top:33px;max-width:330px}.orbit{position:absolute;left:0;top:0;width:105px;height:105px;border:1px solid #c9c3b6;border-radius:50%;display:grid;place-items:center;font-size:43px;transform:rotate(-13deg)}.orbit:before{content:'';position:absolute;inset:9px;border:1px dashed #c9c3b6;border-radius:50%}.orbit-label{position:absolute;left:126px;top:25px;font:10px/1.9 'DM Mono',monospace;color:var(--muted);letter-spacing:1px}.orbit-label b{color:var(--lime);font-weight:500}.asterisk{position:absolute;left:75px;top:72px;font-size:28px;color:var(--pink)}
+.poll{width:100%;max-width:790px;justify-self:end}.poll-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.step-caption{font:11px 'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase}.step-count{font:11px 'DM Mono',monospace;color:var(--muted)}.track{height:4px;background:#e4e0d6;border-radius:9px;overflow:hidden;margin-bottom:28px}.track-fill{height:100%;width:33.333%;background:var(--lime);transition:width .25s ease}
+.question{animation:arrive .28s ease both}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.question h2{font-size:clamp(27px,3.2vw,42px);letter-spacing:-1.8px;line-height:1.08;margin:0 0 10px}.question .help{margin:0 0 24px;color:var(--muted);font-size:13px;line-height:1.65}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.snack-option{min-height:133px;position:relative;overflow:hidden;text-align:left;padding:17px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#f7f5ef,#fffefa);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;transition:transform .16s,border-color .16s,background .16s}.snack-option:after{content:'';position:absolute;right:-28px;top:-30px;width:100px;height:100px;border-radius:50%;border:1px solid #24251f12}.snack-option:hover{transform:translateY(-3px);border-color:#c7bfb0}.snack-option[aria-pressed=true]{border:2px solid var(--lime);padding:16px;background:#f2eee5;box-shadow:0 0 0 3px #f16c421c}.food{font-size:31px;line-height:1}.snack-name{font-size:16px;font-weight:700;letter-spacing:-.4px;margin-top:15px}.snack-desc{display:block;color:var(--muted);font:10px 'DM Mono',monospace;margin-top:5px}.pick-mark{position:absolute;right:13px;bottom:14px;width:21px;height:21px;display:grid;place-items:center;border:1px solid #c9c3b6;border-radius:50%;color:transparent;font-size:12px}.snack-option[aria-pressed=true] .pick-mark{background:var(--lime);border-color:var(--lime);color:var(--night)}
+.price-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.price-option{padding:21px 7px;border:1px solid var(--line);border-radius:14px;background:#fffefa;color:var(--paper);font-size:16px;font-weight:700;transition:all .15s}.price-option small{display:block;font:9px 'DM Mono',monospace;color:var(--muted);margin-top:7px}.price-option:hover{border-color:var(--cyan)}.price-option[aria-pressed=true]{background:var(--lime);color:var(--night);border-color:var(--lime)}.price-option[aria-pressed=true] small{color:#743b27}
+.freq-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.freq-option{padding:17px;text-align:left;border:1px solid var(--line);border-radius:14px;background:#fffefa;color:var(--paper);font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px}.freq-option .freq-icon{font-size:20px}.freq-option[aria-pressed=true]{border:2px solid var(--cyan);padding:16px;background:#f2eee5}.other{width:100%;margin-top:14px;padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:#efe9de;color:var(--paper);outline:none}.other::placeholder{color:#8b877e}.other:focus{border-color:var(--cyan)}
+.navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:25px;padding-top:18px;border-top:1px solid var(--line)}.back{border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--muted);padding:13px 16px;font-size:12px}.back:hover:not(:disabled){color:var(--paper);border-color:#c9c3b6}.back:disabled{opacity:0;pointer-events:none}.next{border:0;border-radius:11px;background:var(--lime);color:var(--night);padding:14px 19px;font-size:12px;font-weight:700;box-shadow:0 4px 0 #cf5733;transition:transform .12s,box-shadow .12s}.next:hover{transform:translateY(2px);box-shadow:0 2px 0 #cf5733}.next:disabled{opacity:.4;cursor:not-allowed}.privacy{margin-top:16px;display:flex;align-items:center;gap:8px;color:#74766c;font:10px 'DM Mono',monospace}.privacy span{color:var(--cyan)}.status{display:none;margin-top:15px;padding:13px 14px;border-radius:12px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#e4f2e8;border:1px solid #9ac6a9;color:#235f3a}.status.error{background:#f9e8e2;border:1px solid #d6a092;color:#8b3021}.status.info{background:#e7edf7;border:1px solid #b1bfd8;color:#27476f}
+footer{display:flex;justify-content:space-between;gap:12px;padding-top:18px;border-top:1px solid #e4e0d6;color:#74766c;font:9px 'DM Mono',monospace;letter-spacing:.8px;text-transform:uppercase}footer a{color:#5c5b53;text-decoration:none}footer a:hover{color:var(--lime)}[hidden]{display:none!important}
+@media(max-width:850px){.wrap{padding:20px 22px 16px}.layout{grid-template-columns:.65fr 1fr;gap:32px}.orbit-wrap{margin-top:24px}.options{gap:8px}.snack-option{min-height:125px;padding:14px}.snack-option[aria-pressed=true]{padding:13px}.snack-name{font-size:14px}.price-options{gap:7px}.price-option{font-size:14px;padding:17px 5px}}
+@media(max-width:650px){.wrap{padding:16px 15px 14px}.brand{font-size:18px}.logo{width:36px;height:36px}.top-right{font-size:8px;letter-spacing:.5px}.layout{display:flex;flex-direction:column;align-items:stretch;gap:27px;padding:43px 0 30px}.intro{display:grid;grid-template-columns:1fr auto;align-items:end;column-gap:10px}.eyebrow{grid-column:1/-1;margin-bottom:17px}h1{font-size:clamp(55px,15vw,83px)}.intro-copy{font-size:12px;line-height:1.7;margin-top:17px;max-width:280px}.orbit-wrap{width:90px;height:90px;margin:0;align-self:end}.orbit{width:78px;height:78px;font-size:32px}.orbit-label,.asterisk{display:none}.poll{max-width:none}.question h2{font-size:31px}.question .help{font-size:12px;margin-bottom:18px}.snack-option{min-height:118px;padding:12px}.snack-option[aria-pressed=true]{padding:11px}.food{font-size:27px}.snack-name{font-size:13px;margin-top:12px}.snack-desc{font-size:9px}.pick-mark{right:9px;bottom:10px}.price-option{padding:17px 3px;font-size:13px}.freq-option{padding:13px;font-size:12px}.freq-option[aria-pressed=true]{padding:12px}.navigation{margin-top:20px}.next{padding:14px 15px}footer{font-size:8px;letter-spacing:.3px}}
+@media(max-width:360px){.options{grid-template-columns:1fr}.snack-option{min-height:85px;display:grid;grid-template-columns:38px 1fr 20px;align-items:center;column-gap:10px}.snack-name{margin-top:0}.snack-desc{margin-top:4px}.food{grid-row:1/3}.pick-mark{position:static;grid-column:3;grid-row:1/3}.price-options{grid-template-columns:repeat(2,1fr)}.intro-copy{max-width:225px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header><div class="brand"><div class="logo">S</div>SnackDrop</div><div class="pill"><span class="dot"></span> COMMUNITY SNACK VOTE</div></header>
-<section class="hero">
-<div><div class="eyebrow">Your cravings, your call</div><h1>What snack<br>should we <span>drop?</span></h1><p class="intro">Help pick the next snack people actually want. Choose your favourite, tell us what price feels fair, and send your vote. It takes less than a minute.</p></div>
-<div class="hero-art" aria-hidden="true"><div class="orbit"><span class="float a">🔥 Most wanted?</span><span class="float b">Your vote counts</span><span class="float c">Snack radar · ON</span><div class="pepper">🌶️</div></div></div>
-</section>
+<div class="wrap">
+<header><div class="brand"><div class="logo">✳</div>snack<span>drop</span></div><div class="top-right"><i class="live-dot"></i> COMMUNITY POLL / 001</div></header>
 <main class="layout">
-<form class="card form-card" id="surveyForm">
-<div class="step"><div class="num">01</div><h2>Pick your snack</h2></div><p class="hint">If we could stock just one, which would you choose?</p>
-<div class="snacks" id="snackChoices">
-<button class="snack" type="button" data-snack="Blue Takis" aria-pressed="false"><span class="food">💙</span><span><strong>Blue Takis</strong><small>Blue Heat · spicy</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Red Takis" aria-pressed="false"><span class="food">🔥</span><span><strong>Red Takis</strong><small>Fuego · classic heat</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="KitKat" aria-pressed="false"><span class="food">🍫</span><span><strong>KitKat</strong><small>Chocolate break</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Sour Patch Kids" aria-pressed="false"><span class="food">🍬</span><span><strong>Sour Patch Kids</strong><small>Sour then sweet</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Skittles" aria-pressed="false"><span class="food">🌈</span><span><strong>Skittles</strong><small>Taste the rainbow</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Other" aria-pressed="false"><span class="food">✨</span><span><strong>Something else</strong><small>Suggest a snack</small></span><span class="check">✓</span></button>
-</div>
-<div class="field"><span class="label">02 · What price feels fair?</span><div class="choices" id="priceChoices"><button class="choice" type="button" data-price="5 SAR" aria-pressed="false">5 SAR</button><button class="choice" type="button" data-price="6 SAR" aria-pressed="false">6 SAR</button><button class="choice" type="button" data-price="7 SAR" aria-pressed="false">7 SAR</button><button class="choice" type="button" data-price="8+ SAR" aria-pressed="false">8+ SAR</button></div></div>
-<div class="field"><span class="label">03 · How often would you buy it?</span><div class="choices" id="frequencyChoices"><button class="choice" type="button" data-frequency="Every day" aria-pressed="false">Every day</button><button class="choice" type="button" data-frequency="A few times a week" aria-pressed="false">A few times a week</button><button class="choice" type="button" data-frequency="Once a week" aria-pressed="false">Once a week</button><button class="choice" type="button" data-frequency="Occasionally" aria-pressed="false">Sometimes</button></div></div>
-<div class="field" id="otherField" hidden><label class="label" for="otherSnack">What snack do you have in mind?</label><input class="other" id="otherSnack" maxlength="100" placeholder="e.g. Oreo Minis, Pringles..."></div>
-<div class="submit-row"><button class="submit" id="submitButton" type="submit">Send my vote ↗</button><div class="privacy">No name, email, or phone number needed.</div></div>
-<div class="status" id="status" role="status" aria-live="polite"></div>
+<section class="intro"><div><div class="eyebrow">A tiny vote with big flavour</div><h1>SNACK<br>ATTACK<span class="outline">.</span><br><span class="lime">YOUR</span><br>CHOICE.</h1><p class="intro-copy">The snack shelf is <b>in your hands.</b> Tell us what you'd grab. We'll take the guesswork out of the next restock.</p></div><div class="orbit-wrap" aria-hidden="true"><div class="orbit">🌶️</div><span class="asterisk">✳</span><div class="orbit-label">FLAVOUR LEVEL<br><b>OFF THE CHARTS ↗</b></div></div></section>
+<section class="poll" aria-label="Snack survey">
+<div class="poll-head"><div class="step-caption" id="stepCaption">STEP 01 / YOUR SNACK</div><div class="step-count" id="stepCount">01 — 03</div></div><div class="track"><div class="track-fill" id="progressFill"></div></div>
+<form id="surveyForm" novalidate>
+<section class="question" id="question1"><h2>What's the main character snack?</h2><p class="help">Pick the one you'd be happiest to see in stock.</p>
+<div class="options" id="snackChoices">
+<button class="snack-option" type="button" data-snack="Blue Takis" aria-pressed="false"><span class="food">💙</span><span><span class="snack-name">Blue Takis</span><span class="snack-desc">BLUE HEAT · SPICY</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Red Takis" aria-pressed="false"><span class="food">🔥</span><span><span class="snack-name">Red Takis</span><span class="snack-desc">FUEGO · CLASSIC HEAT</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="KitKat" aria-pressed="false"><span class="food">🍫</span><span><span class="snack-name">KitKat</span><span class="snack-desc">CHOCOLATE BREAK</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Sour Patch Kids" aria-pressed="false"><span class="food">🍬</span><span><span class="snack-name">Sour Patch Kids</span><span class="snack-desc">SOUR THEN SWEET</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Skittles" aria-pressed="false"><span class="food">🌈</span><span><span class="snack-name">Skittles</span><span class="snack-desc">TASTE THE RAINBOW</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Other" aria-pressed="false"><span class="food">✨</span><span><span class="snack-name">Wildcard</span><span class="snack-desc">YOUR SUGGESTION</span></span><span class="pick-mark">✓</span></button>
+</div><input class="other" id="otherSnack" maxlength="100" placeholder="Name your snack pick…" aria-label="Your suggested snack" hidden></section>
+<section class="question" id="question2" hidden><h2>What feels like a fair deal?</h2><p class="help">Choose the price you'd actually be willing to pay.</p><div class="price-options" id="priceChoices"><button class="price-option" type="button" data-price="5 SAR" aria-pressed="false">5 SAR<small>LOWEST</small></button><button class="price-option" type="button" data-price="6 SAR" aria-pressed="false">6 SAR<small>FAIR</small></button><button class="price-option" type="button" data-price="7 SAR" aria-pressed="false">7 SAR<small>OKAY</small></button><button class="price-option" type="button" data-price="8+ SAR" aria-pressed="false">8+ SAR<small>PREMIUM</small></button></div></section>
+<section class="question" id="question3" hidden><h2>How often are you grabbing it?</h2><p class="help">Be real. How often would this snack make it into your day?</p><div class="freq-options" id="frequencyChoices"><button class="freq-option" type="button" data-frequency="Every day" aria-pressed="false"><span class="freq-icon">⚡</span> Every day</button><button class="freq-option" type="button" data-frequency="A few times a week" aria-pressed="false"><span class="freq-icon">🔥</span> A few times a week</button><button class="freq-option" type="button" data-frequency="Once a week" aria-pressed="false"><span class="freq-icon">🗓️</span> Once a week</button><button class="freq-option" type="button" data-frequency="Occasionally" aria-pressed="false"><span class="freq-icon">🌙</span> Every now & then</button></div></section>
+<div class="navigation"><button type="button" class="back" id="backButton" disabled>← Back</button><button type="button" class="next" id="nextButton" disabled>Choose a snack first →</button></div>
+<div class="privacy"><span>✳</span> NO NAME. NO EMAIL. JUST YOUR TASTE.</div><div class="status" id="status" role="status" aria-live="polite"></div>
 </form>
-<aside class="card side">
-<h3>Small vote. Big snack energy.</h3><p class="side-intro">This poll helps choose what to buy before stocking up. Vote for what you would genuinely pick — every opinion helps.</p>
-<div class="feature"><div class="feature-icon">🎯</div><div><strong>Real opinions only</strong><p>Choose what you would actually buy.</p></div></div>
-<div class="feature"><div class="feature-icon">🔒</div><div><strong>No personal details</strong><p>The survey does not ask who you are.</p></div></div>
-<div class="feature"><div class="feature-icon">📊</div><div><strong>Votes in one place</strong><p>Responses are stored centrally after Supabase is connected.</p></div></div>
-</aside>
+</section>
 </main>
-<footer class="foot"><span>SNACKDROP · COMMUNITY PICKER</span><span>Made for snack people · <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase dashboard ↗</a></span></footer>
+<footer><span>SNACKDROP / FIELD NOTES 001</span><span>MADE FOR THE CRAVING · <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">SUPABASE ↗</a></span></footer>
 </div>
 <script>
-/* Browser-safe configuration only. Never put a service_role or secret key here. */
+/* Browser-safe publishable key only. Never put a service_role or secret key here. */
 const SUPABASE_URL = "https://jtstdajaaasucialvsfs.supabase.co";
 const SUPABASE_KEY = "sb_publishable_1O9wO2dY_ZFFfdPFGaLeMA_3oaW2Hs-";
 const form = document.getElementById("surveyForm");
 const statusBox = document.getElementById("status");
-const submitButton = document.getElementById("submitButton");
-let selectedSnack = "", selectedPrice = "", selectedFrequency = "";
+const nextButton = document.getElementById("nextButton");
+const backButton = document.getElementById("backButton");
+const progressFill = document.getElementById("progressFill");
+const stepCaption = document.getElementById("stepCaption");
+const stepCount = document.getElementById("stepCount");
+const questions = [1,2,3].map(n => document.getElementById("question"+n));
+let step = 1, selectedSnack = "", selectedPrice = "", selectedFrequency = "", sending = false;
 function showStatus(message, kind) { statusBox.textContent = message; statusBox.className = "status show " + kind; }
+function currentValue() { return step === 1 ? selectedSnack : step === 2 ? selectedPrice : selectedFrequency; }
+function refresh() {
+  questions.forEach((q,i) => { q.hidden = i + 1 !== step; });
+  progressFill.style.width = (step / 3 * 100) + "%";
+  stepCaption.textContent = ["STEP 01 / YOUR SNACK","STEP 02 / THE PRICE","STEP 03 / YOUR HABITS"][step-1];
+  stepCount.textContent = "0"+step+" — 03";
+  backButton.disabled = step === 1 || sending;
+  nextButton.textContent = step < 3 ? ["Choose a snack first →","Pick a price →"][step-1] : "Lock in my vote ↗";
+  nextButton.disabled = !currentValue() || sending;
+  nextButton.type = "button";
+}
 function choose(container, selector, key, value) {
   container.querySelectorAll(selector).forEach(el => el.setAttribute("aria-pressed", String(el.dataset[key] === value)));
 }
 document.querySelectorAll("[data-snack]").forEach(button => button.addEventListener("click", () => {
   selectedSnack = button.dataset.snack;
   choose(document.getElementById("snackChoices"), "[data-snack]", "snack", selectedSnack);
-  document.getElementById("otherField").hidden = selectedSnack !== "Other";
-  if (selectedSnack === "Other") document.getElementById("otherSnack").focus();
+  const other = document.getElementById("otherSnack");
+  other.hidden = selectedSnack !== "Other";
+  if (selectedSnack === "Other") other.focus();
+  statusBox.className = "status";
+  refresh();
 }));
 document.querySelectorAll("[data-price]").forEach(button => button.addEventListener("click", () => {
   selectedPrice = button.dataset.price;
   choose(document.getElementById("priceChoices"), "[data-price]", "price", selectedPrice);
+  statusBox.className = "status";
+  refresh();
 }));
 document.querySelectorAll("[data-frequency]").forEach(button => button.addEventListener("click", () => {
   selectedFrequency = button.dataset.frequency;
   choose(document.getElementById("frequencyChoices"), "[data-frequency]", "frequency", selectedFrequency);
+  statusBox.className = "status";
+  refresh();
 }));
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-  if (!selectedSnack || !selectedPrice || !selectedFrequency) {
-    showStatus("Choose a snack, a price, and how often you would buy it first.", "error"); return;
-  }
-  const otherSnack = document.getElementById("otherSnack").value.trim();
-  if (selectedSnack === "Other" && !otherSnack) {
-    showStatus("Tell us which snack you would like to see.", "error");
+backButton.addEventListener("click", () => { if (step > 1 && !sending) { step--; statusBox.className = "status"; refresh(); } });
+nextButton.addEventListener("click", async () => {
+  if (sending) return;
+  if (!currentValue()) { showStatus("Choose an option before continuing.", "error"); return; }
+  if (step === 1 && selectedSnack === "Other" && !document.getElementById("otherSnack").value.trim()) {
+    showStatus("Type the snack you'd like us to stock.", "error");
     document.getElementById("otherSnack").focus(); return;
   }
-  if (SUPABASE_URL.includes("PASTE_YOUR") || SUPABASE_KEY.includes("PASTE_YOUR")) {
-    showStatus("The site is ready, but its database still needs setup. Follow the Supabase steps in README.md, then replace the two configuration placeholders in index.html.", "info"); return;
-  }
-  if (!window.supabase) { showStatus("The database library did not load. Check your connection and try again.", "error"); return; }
-  submitButton.disabled = true; submitButton.textContent = "Sending vote…";
+  if (step < 3) { step++; statusBox.className = "status"; refresh(); return; }
+  if (!window.supabase) { showStatus("The database library didn't load. Check your connection and try again.", "error"); return; }
+  sending = true; refresh(); nextButton.textContent = "Sending your vote…";
   try {
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const { error } = await client.from("snack_survey_responses").insert({
-      snack: selectedSnack, price: selectedPrice, frequency: selectedFrequency, other_snack: selectedSnack === "Other" ? otherSnack : null
+      snack: selectedSnack, price: selectedPrice, frequency: selectedFrequency,
+      other_snack: selectedSnack === "Other" ? document.getElementById("otherSnack").value.trim() : null
     });
     if (error) throw error;
-    showStatus("Vote received! Thanks for helping pick the next snack. 🎉", "ok");
-    form.reset(); selectedSnack = selectedPrice = selectedFrequency = "";
-    document.querySelectorAll("[aria-pressed=true]").forEach(el => el.setAttribute("aria-pressed", "false"));
-    document.getElementById("otherField").hidden = true;
+    showStatus("VOTE LOCKED IN. Thanks for helping choose the next snack! ✳", "ok");
+    selectedSnack = selectedPrice = selectedFrequency = "";
+    document.getElementById("otherSnack").value = "";
+    document.querySelectorAll("[aria-pressed=true]").forEach(el => el.setAttribute("aria-pressed","false"));
+    step = 1; refresh();
+    nextButton.textContent = "Vote submitted ✓";
   } catch (error) {
     console.error("SnackDrop submission failed:", error);
-    showStatus("We could not save your vote. Check the Supabase setup and table permissions, then try again.", "error");
-  } finally { submitButton.disabled = false; submitButton.textContent = "Send my vote ↗"; }
+    showStatus("We couldn't save your vote. Check the database connection and permissions, then try again.", "error");
+  } finally { sending = false; refresh(); }
 });
+refresh();
 </script>
 </body>
 </html>
