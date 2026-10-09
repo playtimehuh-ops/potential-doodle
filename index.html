@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#f7f8fc">
 <meta name="description" content="Vote for the snack you want next. A quick anonymous community snack survey.">
 <title>SnackDrop — Your snack, your vote</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,41 @@ header{display:flex;justify-content:space-between;align-items:center;gap:14px;ma
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px;align-items:start}.card{border:1px solid #2a3852;border-radius:21px;background:linear-gradient(145deg,#151f34f7,#101829f7);box-shadow:0 22px 55px #0002}.form-card{padding:25px}.step{display:flex;align-items:center;gap:11px;margin-bottom:8px}.num{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:#263550;color:#9cc8ff;font-size:12px;font-weight:800}.step h2,.side h3{font:700 18px 'Space Grotesk',sans-serif;letter-spacing:-.4px;margin:0}.hint{margin:0 0 17px 42px;color:var(--muted);font-size:12px;line-height:1.6}.snacks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:25px}.snack{min-height:76px;display:flex;align-items:center;gap:11px;text-align:left;padding:12px;border:1px solid #35425b;border-radius:14px;background:#151f33;color:var(--text);transition:.16s}.snack:hover{border-color:#748eb5;transform:translateY(-1px)}.snack[aria-pressed=true]{border-color:var(--orange);background:linear-gradient(135deg,#3a2c2e,#20263b);box-shadow:inset 0 0 0 1px #ffad5b30}.food{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;background:#26334b;font-size:22px}.snack strong{display:block;font-size:13px;margin-bottom:4px}.snack small{color:var(--muted);font-size:10px}.check{margin-left:auto;width:18px;height:18px;flex:0 0 18px;border:1px solid #56637b;border-radius:50%;display:grid;place-items:center;font-size:11px;color:transparent}.snack[aria-pressed=true] .check{background:var(--orange);border-color:var(--orange);color:#211425}.field{margin-bottom:23px}.label{display:block;font-size:13px;font-weight:800;margin-bottom:11px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid #35425b;border-radius:10px;background:#151f33;color:#d8dfec;padding:10px 14px;font-size:12px;font-weight:700}.choice:hover{border-color:#7588a7}.choice[aria-pressed=true]{border-color:var(--blue);background:#213653;color:white;box-shadow:inset 0 0 0 1px #7bb5ff22}.other{width:100%;margin-top:10px;padding:12px 13px;border:1px solid #35425b;border-radius:11px;background:#0d1525;color:var(--text);outline:none}.other:focus{border-color:var(--blue)}.other::placeholder{color:#75829a}.submit-row{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.submit{border:0;border-radius:12px;padding:14px 19px;background:linear-gradient(135deg,#ffd078,#ff8859);color:#28182a;font-weight:900;box-shadow:0 8px 24px #ff9d4c26;transition:.15s}.submit:hover{filter:brightness(1.06);transform:translateY(-1px)}.submit:disabled{opacity:.6;cursor:wait;transform:none}.privacy{max-width:225px;color:#8996ad;font-size:10px;line-height:1.5}.status{display:none;margin-top:14px;padding:12px 13px;border-radius:11px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#14352d;border:1px solid #28624e;color:#b8f7d5}.status.error{background:#3a2029;border:1px solid #71404d;color:#ffc4cf}.status.info{background:#1c2c47;border:1px solid #3b5782;color:#cbdfff}
 .side{padding:21px}.side h3{margin-bottom:9px}.side-intro{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 18px}.feature{display:flex;gap:11px;padding:13px 0;border-top:1px solid #2a3650}.feature-icon{width:33px;height:33px;flex:0 0 33px;display:grid;place-items:center;border-radius:10px;background:#26334b;font-size:15px}.feature strong{display:block;font-size:12px;margin:1px 0 4px}.feature p{margin:0;color:var(--muted);font-size:10px;line-height:1.6}.foot{display:flex;justify-content:space-between;gap:14px;margin-top:20px;padding:0 4px;color:#74829b;font-size:10px}.foot a{color:#9eacc3;text-decoration:none}.foot a:hover{color:white}
 @media(max-width:760px){.shell{padding:16px 13px 28px}header{margin-bottom:27px}.hero{grid-template-columns:1fr;gap:0}.hero-art{min-height:210px}.orbit{width:245px}.pepper{font-size:75px}.float{font-size:9px;padding:7px 9px}.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:8px 17px}.side h3,.side-intro{grid-column:1/-1}.feature{padding:10px 0}.form-card{padding:19px}h1{letter-spacing:-2.5px}.foot{flex-direction:column}}@media(max-width:430px){.snacks{grid-template-columns:1fr}.snack{min-height:69px}.side{display:block}.pill{font-size:9px;padding:7px 9px}.brand{font-size:18px}}
+
+/* Light UI refresh: keep the existing survey logic and Supabase integration intact. */
+:root{color-scheme:light;--bg:#f6f7fb;--panel:#ffffff;--panel2:#f0f2f7;--line:#e1e5ee;--text:#202536;--muted:#737b8e;--orange:#ef8751;--blue:#6478e8;--green:#229b73}
+body{background:radial-gradient(ellipse at 10% 0%,#fff0e5 0,transparent 36%),radial-gradient(ellipse at 100% 18%,#eceeff 0,transparent 34%),#f7f8fc;color:var(--text)}
+.logo{background:linear-gradient(135deg,#ffce9a,#f18a61);color:#422b2a;box-shadow:0 8px 24px #e99a6830}
+.pill{border-color:#e1e5ee;background:#fff;color:#667085;box-shadow:0 3px 12px #27314a08}
+.hero .eyebrow{color:#d97745}
+h1 span{color:#e77c48}
+.orbit{border-color:#e4e6ef;background:radial-gradient(circle,#fff 0,#f5f6fc 58%,#eceef8 100%);box-shadow:inset 0 0 50px #dce1f433,0 24px 70px #29345b10}
+.orbit:before,.orbit:after{border-color:#d4d9e7}
+.float{border-color:#e3e5ee;background:#fff;color:#50586c;box-shadow:0 12px 26px #27314a12}
+.card{border:1px solid #e6e8f0;background:rgba(255,255,255,.94);box-shadow:0 18px 50px #29345b0b}
+.num{background:#edf0ff;color:#596de0}
+.snack{border-color:#e4e7ef;background:#fff;color:#252a3b}
+.snack:hover{border-color:#b8c1e8;box-shadow:0 5px 18px #29345b0a}
+.snack[aria-pressed=true]{border-color:#ee9a6b;background:linear-gradient(135deg,#fff4eb,#fffaf6);box-shadow:inset 0 0 0 1px #f0a07122}
+.food{background:#f1f3f9;color:#353b50}
+.check{border-color:#c8cedb}
+.snack[aria-pressed=true] .check{background:#ed8a54;border-color:#ed8a54;color:#fff}
+.choice{border-color:#e0e4ed;background:#fff;color:#596174}
+.choice:hover{border-color:#b6bfdc}
+.choice[aria-pressed=true]{border-color:#7c8be7;background:#f0f2ff;color:#3546b0;box-shadow:inset 0 0 0 1px #7c8be722}
+.other{border-color:#e0e4ed;background:#fbfcff;color:#252a3b}
+.other:focus{border-color:#8996ee;box-shadow:0 0 0 3px #8996ee1c}
+.other::placeholder{color:#9aa1b1}
+.submit{background:linear-gradient(135deg,#ffc995,#f28c61);color:#402628;box-shadow:0 8px 24px #e99a6826}
+.privacy{color:#858da0}
+.feature{border-top-color:#eceef4}
+.feature-icon{background:#f0f2ff;color:#596de0}
+.status.ok{background:#ecf9f2;border-color:#c1ead3;color:#24724e}
+.status.error{background:#fff0f1;border-color:#f1c7cc;color:#a43d4b}
+.status.info{background:#eef3ff;border-color:#d2ddff;color:#435ca3}
+footer{color:#858da0}
+@media(max-width:700px){header{margin-bottom:28px}.hero{gap:10px}.orbit{max-width:290px}.form-card{padding:19px}.side{padding:18px}}
+
 </style>
 </head>
 <body>
