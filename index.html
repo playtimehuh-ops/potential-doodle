@@ -91,7 +91,7 @@ button,input{font:inherit}.wrap{max-width:560px;margin:0 auto;padding:28px 18px 
       form.hidden=true;result.hidden=false;result.focus();
     }catch(error){
       console.error("SnackDrop submission failed:",error);
-      err.textContent="We couldn't save your drop. Please try again in a moment.";
+      err.textContent=error?.message ? "Save failed: "+error.message : "We couldn\'t save your drop. Please try again in a moment.";
     }finally{submit.disabled=false;submit.textContent="Send my drop";}
   });
   again.addEventListener("click",()=>{form.reset();customWrap.hidden=true;result.hidden=true;form.hidden=false;err.textContent="";nameInput.focus();});
