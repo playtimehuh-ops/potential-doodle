@@ -3,73 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f9f4e8">
-<meta name="description" content="Help choose the next snack. A quick, anonymous community snack poll.">
-<title>SnackDrop — Pick the next drop</title>
+<meta name="theme-color" content="#181632">
+<meta name="description" content="Help choose the next snack. Cast your anonymous SnackDrop vote.">
+<title>SnackDrop — Choose the next obsession</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{color-scheme:light;--paper:#f9f4e8;--ink:#20241f;--muted:#77786d;--line:#e8dfce;--white:#fffdf7;--orange:#ff6538;--blue:#294fbd;--lime:#d6f36a;--purple:#d8c9ff;--green:#1e7955}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #294fbd66;outline-offset:3px}.page{max-width:1180px;margin:auto;padding:22px 28px 28px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px;font:700 22px 'Space Grotesk',sans-serif;letter-spacing:-1px}.brand-mark{width:38px;height:38px;border-radius:13px;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:21px;box-shadow:4px 4px 0 var(--ink)}.live{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;background:#fffaf0;padding:9px 13px;font-size:10px;font-weight:800;letter-spacing:1.2px}.live i{width:7px;height:7px;border-radius:50%;background:#35a56f;box-shadow:0 0 0 4px #35a56f20}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:54px 0 40px}.kicker{display:inline-flex;align-items:center;gap:8px;background:var(--lime);border:1.5px solid var(--ink);border-radius:99px;padding:8px 12px;font-size:10px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;transform:rotate(-2deg);margin-bottom:20px}.kicker span{font-size:14px}h1{font:700 clamp(48px,7.4vw,88px)/.92 'Space Grotesk',sans-serif;letter-spacing:-5.5px;margin:0;max-width:660px}h1 .orange{color:var(--orange);text-shadow:2px 2px 0 var(--ink)}.hero-copy{max-width:470px;margin:22px 0 0;color:#66685e;font-size:15px;line-height:1.8}.hero-copy strong{color:var(--ink)}.art{min-height:295px;position:relative;display:grid;place-items:center}.burst{width:min(290px,70vw);aspect-ratio:1;position:relative;display:grid;place-items:center;background:var(--orange);border:2px solid var(--ink);border-radius:43% 57% 54% 46%/46% 42% 58% 54%;transform:rotate(7deg);box-shadow:10px 10px 0 var(--ink)}.burst:before{content:'';position:absolute;inset:17px;border:2px dashed #fff8e5;border-radius:50%}.chip{font-size:104px;filter:drop-shadow(3px 5px 0 #a93a1c);transform:rotate(-10deg);z-index:1}.sticker{position:absolute;z-index:2;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:900}.sticker.one{top:14%;left:1%;background:var(--lime);padding:11px 13px;border-radius:12px;transform:rotate(-8deg);font-size:12px}.sticker.two{right:-1%;top:29%;background:var(--purple);padding:10px 12px;border-radius:50%;width:84px;height:84px;display:grid;place-items:center;text-align:center;transform:rotate(9deg);font-size:10px;line-height:1.25}.sticker.three{bottom:8%;left:7%;background:var(--white);padding:10px 12px;border-radius:9px;transform:rotate(4deg);font-size:10px;letter-spacing:1px}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:2px 0 15px}.section-head h2{font:700 26px 'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}.section-head p{margin:0;color:var(--muted);font-size:12px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px;align-items:start}.panel{background:var(--white);border:1.5px solid var(--ink);border-radius:19px;box-shadow:5px 5px 0 var(--ink)}.survey{padding:25px}.progress-line{height:6px;background:#eee6d7;border-radius:99px;overflow:hidden;margin-bottom:22px}.progress-fill{height:100%;width:33.333%;background:var(--blue);border-radius:99px;transition:width .25s}.step-label{display:flex;align-items:center;gap:10px;margin-bottom:8px}.step-num{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:var(--blue);color:white;font-size:11px;font-weight:900}.step-label h3{font:700 20px 'Space Grotesk',sans-serif;letter-spacing:-.5px;margin:0}.subhint{margin:0 0 17px 41px;font-size:12px;line-height:1.6;color:var(--muted)}.snacks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.snack{position:relative;min-height:85px;display:flex;align-items:center;gap:12px;text-align:left;padding:13px;border:1.5px solid #e8dfce;border-radius:14px;background:#fffdf8;color:var(--ink);transition:transform .16s,border-color .16s,box-shadow .16s}.snack:hover{transform:translateY(-2px);border-color:var(--ink);box-shadow:2px 3px 0 #20241f30}.snack[aria-pressed=true]{background:#fff0e8;border-color:var(--orange);box-shadow:inset 0 0 0 1px var(--orange)}.food{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;background:#f5eddd;border-radius:13px;font-size:24px}.snack strong{display:block;font-size:13px;margin-bottom:4px}.snack small{display:block;color:var(--muted);font-size:10px}.check{margin-left:auto;flex:0 0 19px;width:19px;height:19px;display:grid;place-items:center;border:1.5px solid #d9d0bf;border-radius:50%;font-size:11px;color:transparent}.snack[aria-pressed=true] .check{background:var(--orange);border-color:var(--orange);color:white}
-.field{margin-top:25px}.field-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.field-head .step-num{background:#f1eaff;color:#5634a5}.field-head h3{font:700 17px 'Space Grotesk',sans-serif;letter-spacing:-.3px;margin:0}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1.5px solid #e8dfce;border-radius:10px;background:#fffdf8;color:#44463e;padding:11px 14px;font-size:12px;font-weight:800;transition:transform .15s}.choice:hover{transform:translateY(-1px);border-color:var(--ink)}.choice[aria-pressed=true]{background:#e9efff;border-color:var(--blue);color:#203e98;box-shadow:inset 0 0 0 1px #294fbd22}.other{width:100%;margin-top:10px;padding:13px;border:1.5px solid var(--line);border-radius:12px;background:white;outline:none}.other:focus{border-color:var(--blue)}.other::placeholder{color:#a3a094}.actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:26px;padding-top:20px}.submit{border:2px solid var(--ink);border-radius:12px;background:var(--lime);color:var(--ink);padding:14px 18px;font-weight:900;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s}.submit:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.submit:disabled{opacity:.65;cursor:wait}.privacy{max-width:210px;color:var(--muted);font-size:10px;line-height:1.6}.status{display:none;margin-top:15px;padding:13px 14px;border-radius:12px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#e8f6eb;border:1px solid #b7ddc1;color:#226443}.status.error{background:#fff0ed;border:1px solid #f0c7bd;color:#9d3828}.status.info{background:#edf2ff;border:1px solid #cbd7ff;color:#28488f}
-.sidebar{padding:21px;position:relative;overflow:hidden}.side-tag{display:inline-block;background:var(--purple);border:1px solid var(--ink);border-radius:7px;padding:6px 8px;font-size:9px;font-weight:900;letter-spacing:1px;margin-bottom:12px}.sidebar h3{font:700 25px/.98 'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0 0 12px}.sidebar h3 span{color:var(--orange)}.side-intro{font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 18px}.reason{display:flex;gap:10px;padding:13px 0;border-top:1px solid var(--line)}.reason-icon{width:34px;height:34px;flex:0 0 34px;border:1px solid var(--ink);border-radius:11px;display:grid;place-items:center;background:#fff3d6;font-size:15px}.reason strong{display:block;font-size:12px;margin:2px 0 4px}.reason p{font-size:10px;line-height:1.6;color:var(--muted);margin:0}.mini-note{margin-top:14px;background:var(--lime);border:1.5px solid var(--ink);border-radius:12px;padding:13px;font-size:11px;font-weight:800;line-height:1.55;transform:rotate(-1deg)}footer{display:flex;justify-content:space-between;gap:12px;padding:26px 2px 4px;color:#898477;font-size:10px}footer a{color:#55564e;text-decoration:underline;text-underline-offset:3px}
-@media(max-width:800px){.page{padding:16px 16px 24px}.hero{grid-template-columns:1fr .7fr;gap:10px;padding:42px 0 34px}.art{min-height:240px}.burst{width:220px}.chip{font-size:82px}.sticker.one{left:-2%;font-size:10px}.sticker.two{width:70px;height:70px;right:-2%;font-size:9px}.workspace{grid-template-columns:minmax(0,1fr) 240px}.survey{padding:20px}.snack{padding:10px;gap:9px}.food{width:37px;height:37px;flex-basis:37px;font-size:21px}.snack strong{font-size:12px}h1{letter-spacing:-3.5px}}
-@media(max-width:640px){.page{padding:13px 12px 20px}.topbar{padding-bottom:14px}.brand{font-size:20px}.live{font-size:8px;letter-spacing:.7px;padding:8px 9px}.hero{grid-template-columns:1fr;padding:35px 0 25px}.hero-copy{font-size:14px;margin-top:16px}.art{min-height:220px;margin-top:4px}.burst{width:190px}.chip{font-size:72px}.section-head{align-items:start;flex-direction:column;gap:5px}.section-head h2{font-size:23px}.workspace{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:0 15px}.side-tag,.sidebar h3,.side-intro,.mini-note{grid-column:1/-1}.reason{padding:10px 0}.survey{padding:17px}.snacks{gap:8px}.snack{min-height:76px}.field{margin-top:22px}.field-head h3{font-size:16px}footer{flex-direction:column}}
-@media(max-width:390px){.snacks{grid-template-columns:1fr}.snack{min-height:68px}.live{max-width:145px}.privacy{max-width:160px}h1{font-size:51px}}
+:root{color-scheme:dark;--night:#181632;--night2:#211e43;--panel:#28254b;--line:#454166;--paper:#fff9ed;--muted:#b3afce;--lime:#d7ff52;--pink:#ff5e83;--cyan:#6de9e0;--white:#fffdf8}
+*{box-sizing:border-box}html{min-height:100%;background:var(--night)}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 80% 12%,#38306b 0,transparent 33%),radial-gradient(ellipse at 3% 92%,#2a2855 0,transparent 35%),var(--night);color:var(--paper);font-family:'Space Grotesk',sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}.wrap{max-width:1440px;min-height:100vh;margin:auto;padding:24px 34px 18px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:700;letter-spacing:-1px}.logo{width:42px;height:42px;display:grid;place-items:center;background:var(--lime);color:var(--night);border-radius:14px;font-size:24px;font-weight:700;transform:rotate(-6deg);box-shadow:4px 4px 0 var(--pink)}.brand span{color:var(--lime)}.top-right{display:flex;align-items:center;gap:10px;color:var(--muted);font:10px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase}.live-dot{width:8px;height:8px;background:var(--lime);border-radius:50%;box-shadow:0 0 14px #d7ff52a0}
+.layout{flex:1;display:grid;grid-template-columns:minmax(260px,.75fr) minmax(0,1.45fr);gap:clamp(30px,7vw,100px);align-items:center;padding:clamp(36px,7vh,85px) 0 40px}
+.intro{align-self:center}.eyebrow{display:flex;align-items:center;gap:9px;font:11px 'DM Mono',monospace;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:22px}.eyebrow:before{content:'';height:1px;width:28px;background:var(--cyan)}h1{font-size:clamp(54px,7vw,100px);line-height:.86;letter-spacing:-.085em;margin:0;font-weight:700}h1 .outline{color:transparent;-webkit-text-stroke:1.5px var(--paper)}h1 .lime{color:var(--lime)}.intro-copy{font-size:15px;line-height:1.85;color:var(--muted);max-width:350px;margin:25px 0 0}.intro-copy b{color:var(--paper);font-weight:600}.orbit-wrap{position:relative;height:135px;margin-top:33px;max-width:330px}.orbit{position:absolute;left:0;top:0;width:105px;height:105px;border:1px solid #68628d;border-radius:50%;display:grid;place-items:center;font-size:43px;transform:rotate(-13deg)}.orbit:before{content:'';position:absolute;inset:9px;border:1px dashed #68628d;border-radius:50%}.orbit-label{position:absolute;left:126px;top:25px;font:10px/1.9 'DM Mono',monospace;color:var(--muted);letter-spacing:1px}.orbit-label b{color:var(--lime);font-weight:500}.asterisk{position:absolute;left:75px;top:72px;font-size:28px;color:var(--pink)}
+.poll{width:100%;max-width:790px;justify-self:end}.poll-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.step-caption{font:11px 'DM Mono',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase}.step-count{font:11px 'DM Mono',monospace;color:var(--muted)}.track{height:4px;background:#3a365e;border-radius:9px;overflow:hidden;margin-bottom:28px}.track-fill{height:100%;width:33.333%;background:var(--lime);transition:width .25s ease}
+.question{animation:arrive .28s ease both}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.question h2{font-size:clamp(27px,3.2vw,42px);letter-spacing:-1.8px;line-height:1.08;margin:0 0 10px}.question .help{margin:0 0 24px;color:var(--muted);font-size:13px;line-height:1.65}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.snack-option{min-height:133px;position:relative;overflow:hidden;text-align:left;padding:17px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#2b2851,#242142);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;transition:transform .16s,border-color .16s,background .16s}.snack-option:after{content:'';position:absolute;right:-28px;top:-30px;width:100px;height:100px;border-radius:50%;border:1px solid #ffffff12}.snack-option:hover{transform:translateY(-3px);border-color:#a5a0cb}.snack-option[aria-pressed=true]{border:2px solid var(--lime);padding:16px;background:#353657;box-shadow:0 0 0 3px #d7ff521c}.food{font-size:31px;line-height:1}.snack-name{font-size:16px;font-weight:700;letter-spacing:-.4px;margin-top:15px}.snack-desc{display:block;color:var(--muted);font:10px 'DM Mono',monospace;margin-top:5px}.pick-mark{position:absolute;right:13px;bottom:14px;width:21px;height:21px;display:grid;place-items:center;border:1px solid #625d83;border-radius:50%;color:transparent;font-size:12px}.snack-option[aria-pressed=true] .pick-mark{background:var(--lime);border-color:var(--lime);color:var(--night)}
+.price-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.price-option{padding:21px 7px;border:1px solid var(--line);border-radius:14px;background:#28254b;color:var(--paper);font-size:16px;font-weight:700;transition:all .15s}.price-option small{display:block;font:9px 'DM Mono',monospace;color:var(--muted);margin-top:7px}.price-option:hover{border-color:var(--cyan)}.price-option[aria-pressed=true]{background:var(--lime);color:var(--night);border-color:var(--lime)}.price-option[aria-pressed=true] small{color:#484d28}
+.freq-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.freq-option{padding:17px;text-align:left;border:1px solid var(--line);border-radius:14px;background:#28254b;color:var(--paper);font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px}.freq-option .freq-icon{font-size:20px}.freq-option[aria-pressed=true]{border:2px solid var(--cyan);padding:16px;background:#293b58}.other{width:100%;margin-top:14px;padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:#211e43;color:var(--paper);outline:none}.other::placeholder{color:#8782a8}.other:focus{border-color:var(--cyan)}
+.navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:25px;padding-top:18px;border-top:1px solid var(--line)}.back{border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--muted);padding:13px 16px;font-size:12px}.back:hover:not(:disabled){color:var(--paper);border-color:#8c86b2}.back:disabled{opacity:0;pointer-events:none}.next{border:0;border-radius:11px;background:var(--lime);color:var(--night);padding:14px 19px;font-size:12px;font-weight:700;box-shadow:0 4px 0 #94b32b;transition:transform .12s,box-shadow .12s}.next:hover{transform:translateY(2px);box-shadow:0 2px 0 #94b32b}.next:disabled{opacity:.4;cursor:not-allowed}.privacy{margin-top:16px;display:flex;align-items:center;gap:8px;color:#9691b4;font:10px 'DM Mono',monospace}.privacy span{color:var(--cyan)}.status{display:none;margin-top:15px;padding:13px 14px;border-radius:12px;font-size:12px;line-height:1.6}.status.show{display:block}.status.ok{background:#173e39;border:1px solid #3b8d78;color:#b9ffde}.status.error{background:#49283a;border:1px solid #a64c70;color:#ffd5df}.status.info{background:#292c52;border:1px solid #696caa;color:#e3e3ff}
+footer{display:flex;justify-content:space-between;gap:12px;padding-top:18px;border-top:1px solid #373355;color:#777293;font:9px 'DM Mono',monospace;letter-spacing:.8px;text-transform:uppercase}footer a{color:#aaa5ca;text-decoration:none}footer a:hover{color:var(--lime)}[hidden]{display:none!important}
+@media(max-width:850px){.wrap{padding:20px 22px 16px}.layout{grid-template-columns:.65fr 1fr;gap:32px}.orbit-wrap{margin-top:24px}.options{gap:8px}.snack-option{min-height:125px;padding:14px}.snack-option[aria-pressed=true]{padding:13px}.snack-name{font-size:14px}.price-options{gap:7px}.price-option{font-size:14px;padding:17px 5px}}
+@media(max-width:650px){.wrap{padding:16px 15px 14px}.brand{font-size:18px}.logo{width:36px;height:36px}.top-right{font-size:8px;letter-spacing:.5px}.layout{display:flex;flex-direction:column;align-items:stretch;gap:27px;padding:43px 0 30px}.intro{display:grid;grid-template-columns:1fr auto;align-items:end;column-gap:10px}.eyebrow{grid-column:1/-1;margin-bottom:17px}h1{font-size:clamp(55px,15vw,83px)}.intro-copy{font-size:12px;line-height:1.7;margin-top:17px;max-width:280px}.orbit-wrap{width:90px;height:90px;margin:0;align-self:end}.orbit{width:78px;height:78px;font-size:32px}.orbit-label,.asterisk{display:none}.poll{max-width:none}.question h2{font-size:31px}.question .help{font-size:12px;margin-bottom:18px}.snack-option{min-height:118px;padding:12px}.snack-option[aria-pressed=true]{padding:11px}.food{font-size:27px}.snack-name{font-size:13px;margin-top:12px}.snack-desc{font-size:9px}.pick-mark{right:9px;bottom:10px}.price-option{padding:17px 3px;font-size:13px}.freq-option{padding:13px;font-size:12px}.freq-option[aria-pressed=true]{padding:12px}.navigation{margin-top:20px}.next{padding:14px 15px}footer{font-size:8px;letter-spacing:.3px}}
+@media(max-width:360px){.options{grid-template-columns:1fr}.snack-option{min-height:85px;display:grid;grid-template-columns:38px 1fr 20px;align-items:center;column-gap:10px}.snack-name{margin-top:0}.snack-desc{margin-top:4px}.food{grid-row:1/3}.pick-mark{position:static;grid-column:3;grid-row:1/3}.price-options{grid-template-columns:repeat(2,1fr)}.intro-copy{max-width:225px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="page">
-<header class="topbar"><div class="brand"><div class="brand-mark">S</div>snackdrop<span style="color:var(--orange)">.</span></div><div class="live"><i></i> THE SNACK POLL</div></header>
-<section class="hero">
-<div><div class="kicker"><span>✳</span> You pick. We stock.</div><h1>THE NEXT<br>SNACK IS<br><span class="orange">YOUR CALL.</span></h1><p class="hero-copy">Help choose what hits the snack shelf next. <strong>Pick your craving, choose a fair price,</strong> and tell us how often you'd grab it. Quick vote. No personal details.</p></div>
-<div class="art" aria-hidden="true"><div class="burst"><div class="chip">🌶️</div></div><div class="sticker one">SNACK RADAR ↗</div><div class="sticker two">100%<br>CRAVING<br>POWER</div><div class="sticker three">VOTE YOUR VIBE ✦</div></div>
-</section>
-<div class="section-head"><h2>Make your pick.</h2><p>Three quick choices · less than a minute</p></div>
-<main class="workspace">
-<form class="panel survey" id="surveyForm">
-<div class="progress-line" aria-label="Survey progress"><div class="progress-fill" id="progressFill"></div></div>
-<div class="step-label"><div class="step-num">01</div><h3>What's the snack?</h3></div><p class="subhint">If we could stock just one, what would you actually pick?</p>
-<div class="snacks" id="snackChoices">
-<button class="snack" type="button" data-snack="Blue Takis" aria-pressed="false"><span class="food">💙</span><span><strong>Blue Takis</strong><small>Blue Heat · spicy</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Red Takis" aria-pressed="false"><span class="food">🔥</span><span><strong>Red Takis</strong><small>Fuego · classic heat</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="KitKat" aria-pressed="false"><span class="food">🍫</span><span><strong>KitKat</strong><small>Chocolate break</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Sour Patch Kids" aria-pressed="false"><span class="food">🍬</span><span><strong>Sour Patch Kids</strong><small>Sour then sweet</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Skittles" aria-pressed="false"><span class="food">🌈</span><span><strong>Skittles</strong><small>Taste the rainbow</small></span><span class="check">✓</span></button>
-<button class="snack" type="button" data-snack="Other" aria-pressed="false"><span class="food">✨</span><span><strong>Wildcard</strong><small>Suggest your own</small></span><span class="check">✓</span></button>
-</div>
-<div class="field"><div class="field-head"><div class="step-num">02</div><h3>What's a fair price?</h3></div><div class="choices" id="priceChoices"><button class="choice" type="button" data-price="5 SAR" aria-pressed="false">5 SAR</button><button class="choice" type="button" data-price="6 SAR" aria-pressed="false">6 SAR</button><button class="choice" type="button" data-price="7 SAR" aria-pressed="false">7 SAR</button><button class="choice" type="button" data-price="8+ SAR" aria-pressed="false">8+ SAR</button></div></div>
-<div class="field"><div class="field-head"><div class="step-num">03</div><h3>How often would you buy it?</h3></div><div class="choices" id="frequencyChoices"><button class="choice" type="button" data-frequency="Every day" aria-pressed="false">Every day</button><button class="choice" type="button" data-frequency="A few times a week" aria-pressed="false">A few times a week</button><button class="choice" type="button" data-frequency="Once a week" aria-pressed="false">Once a week</button><button class="choice" type="button" data-frequency="Occasionally" aria-pressed="false">Every now & then</button></div></div>
-<div class="field" id="otherField" hidden><label class="field-head" for="otherSnack"><strong>What snack should we add?</strong></label><input class="other" id="otherSnack" maxlength="100" placeholder="e.g. Oreo Minis, Pringles…"></div>
-<div class="actions"><button class="submit" id="submitButton" type="submit">Lock in my vote ↗</button><div class="privacy">🔒 Anonymous by design. No name, email, or phone number.</div></div>
-<div class="status" id="status" role="status" aria-live="polite"></div>
+<div class="wrap">
+<header><div class="brand"><div class="logo">✳</div>snack<span>drop</span></div><div class="top-right"><i class="live-dot"></i> COMMUNITY POLL / 001</div></header>
+<main class="layout">
+<section class="intro"><div><div class="eyebrow">A tiny vote with big flavour</div><h1>SNACK<br>ATTACK<span class="outline">.</span><br><span class="lime">YOUR</span><br>CHOICE.</h1><p class="intro-copy">The snack shelf is <b>in your hands.</b> Tell us what you'd grab. We'll take the guesswork out of the next restock.</p></div><div class="orbit-wrap" aria-hidden="true"><div class="orbit">🌶️</div><span class="asterisk">✳</span><div class="orbit-label">FLAVOUR LEVEL<br><b>OFF THE CHARTS ↗</b></div></div></section>
+<section class="poll" aria-label="Snack survey">
+<div class="poll-head"><div class="step-caption" id="stepCaption">STEP 01 / YOUR SNACK</div><div class="step-count" id="stepCount">01 — 03</div></div><div class="track"><div class="track-fill" id="progressFill"></div></div>
+<form id="surveyForm" novalidate>
+<section class="question" id="question1"><h2>What's the main character snack?</h2><p class="help">Pick the one you'd be happiest to see in stock.</p>
+<div class="options" id="snackChoices">
+<button class="snack-option" type="button" data-snack="Blue Takis" aria-pressed="false"><span class="food">💙</span><span><span class="snack-name">Blue Takis</span><span class="snack-desc">BLUE HEAT · SPICY</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Red Takis" aria-pressed="false"><span class="food">🔥</span><span><span class="snack-name">Red Takis</span><span class="snack-desc">FUEGO · CLASSIC HEAT</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="KitKat" aria-pressed="false"><span class="food">🍫</span><span><span class="snack-name">KitKat</span><span class="snack-desc">CHOCOLATE BREAK</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Sour Patch Kids" aria-pressed="false"><span class="food">🍬</span><span><span class="snack-name">Sour Patch Kids</span><span class="snack-desc">SOUR THEN SWEET</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Skittles" aria-pressed="false"><span class="food">🌈</span><span><span class="snack-name">Skittles</span><span class="snack-desc">TASTE THE RAINBOW</span></span><span class="pick-mark">✓</span></button>
+<button class="snack-option" type="button" data-snack="Other" aria-pressed="false"><span class="food">✨</span><span><span class="snack-name">Wildcard</span><span class="snack-desc">YOUR SUGGESTION</span></span><span class="pick-mark">✓</span></button>
+</div><input class="other" id="otherSnack" maxlength="100" placeholder="Name your snack pick…" aria-label="Your suggested snack" hidden></section>
+<section class="question" id="question2" hidden><h2>What feels like a fair deal?</h2><p class="help">Choose the price you'd actually be willing to pay.</p><div class="price-options" id="priceChoices"><button class="price-option" type="button" data-price="5 SAR" aria-pressed="false">5 SAR<small>LOWEST</small></button><button class="price-option" type="button" data-price="6 SAR" aria-pressed="false">6 SAR<small>FAIR</small></button><button class="price-option" type="button" data-price="7 SAR" aria-pressed="false">7 SAR<small>OKAY</small></button><button class="price-option" type="button" data-price="8+ SAR" aria-pressed="false">8+ SAR<small>PREMIUM</small></button></div></section>
+<section class="question" id="question3" hidden><h2>How often are you grabbing it?</h2><p class="help">Be real. How often would this snack make it into your day?</p><div class="freq-options" id="frequencyChoices"><button class="freq-option" type="button" data-frequency="Every day" aria-pressed="false"><span class="freq-icon">⚡</span> Every day</button><button class="freq-option" type="button" data-frequency="A few times a week" aria-pressed="false"><span class="freq-icon">🔥</span> A few times a week</button><button class="freq-option" type="button" data-frequency="Once a week" aria-pressed="false"><span class="freq-icon">🗓️</span> Once a week</button><button class="freq-option" type="button" data-frequency="Occasionally" aria-pressed="false"><span class="freq-icon">🌙</span> Every now & then</button></div></section>
+<div class="navigation"><button type="button" class="back" id="backButton" disabled>← Back</button><button type="button" class="next" id="nextButton" disabled>Choose a snack first →</button></div>
+<div class="privacy"><span>✳</span> NO NAME. NO EMAIL. JUST YOUR TASTE.</div><div class="status" id="status" role="status" aria-live="polite"></div>
 </form>
-<aside class="panel sidebar"><div class="side-tag">WHY YOUR VOTE MATTERS</div><h3>GOOD SNACKS.<br><span>NO GUESSWORK.</span></h3><p class="side-intro">The poll helps decide what to buy before stocking up. Pick honestly — the best snack is the one people actually want.</p>
-<div class="reason"><div class="reason-icon">🎯</div><div><strong>Your taste, your call</strong><p>Vote for what you would really buy.</p></div></div>
-<div class="reason"><div class="reason-icon">🔒</div><div><strong>Keep it anonymous</strong><p>No personal info needed to vote.</p></div></div>
-<div class="reason"><div class="reason-icon">📊</div><div><strong>Every vote counts</strong><p>Responses are collected in one place.</p></div></div>
-<div class="mini-note">THE MISSION: stock the snacks YOU want. ✳</div></aside>
+</section>
 </main>
-<footer><span>SNACKDROP® · COMMUNITY SNACK POLL</span><span>Powered by cravings · <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase dashboard ↗</a></span></footer>
+<footer><span>SNACKDROP / FIELD NOTES 001</span><span>MADE FOR THE CRAVING · <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">SUPABASE ↗</a></span></footer>
 </div>
 <script>
-/* Browser-safe configuration only. Never put a service_role or secret key here. */
+/* Browser-safe publishable key only. Never put a service_role or secret key here. */
 const SUPABASE_URL = "https://jtstdajaaasucialvsfs.supabase.co";
 const SUPABASE_KEY = "sb_publishable_1O9wO2dY_ZFFfdPFGaLeMA_3oaW2Hs-";
 const form = document.getElementById("surveyForm");
 const statusBox = document.getElementById("status");
-const submitButton = document.getElementById("submitButton");
+const nextButton = document.getElementById("nextButton");
+const backButton = document.getElementById("backButton");
 const progressFill = document.getElementById("progressFill");
-let selectedSnack = "", selectedPrice = "", selectedFrequency = "";
+const stepCaption = document.getElementById("stepCaption");
+const stepCount = document.getElementById("stepCount");
+const questions = [1,2,3].map(n => document.getElementById("question"+n));
+let step = 1, selectedSnack = "", selectedPrice = "", selectedFrequency = "", sending = false;
 function showStatus(message, kind) { statusBox.textContent = message; statusBox.className = "status show " + kind; }
-function updateProgress() {
-  const count = [selectedSnack, selectedPrice, selectedFrequency].filter(Boolean).length;
-  progressFill.style.width = (count / 3 * 100) + "%";
+function currentValue() { return step === 1 ? selectedSnack : step === 2 ? selectedPrice : selectedFrequency; }
+function refresh() {
+  questions.forEach((q,i) => { q.hidden = i + 1 !== step; });
+  progressFill.style.width = (step / 3 * 100) + "%";
+  stepCaption.textContent = ["STEP 01 / YOUR SNACK","STEP 02 / THE PRICE","STEP 03 / YOUR HABITS"][step-1];
+  stepCount.textContent = "0"+step+" — 03";
+  backButton.disabled = step === 1 || sending;
+  nextButton.textContent = step < 3 ? ["Choose a snack first →","Pick a price →"][step-1] : "Lock in my vote ↗";
+  nextButton.disabled = !currentValue() || sending;
+  nextButton.type = "button";
 }
 function choose(container, selector, key, value) {
   container.querySelectorAll(selector).forEach(el => el.setAttribute("aria-pressed", String(el.dataset[key] === value)));
@@ -77,47 +85,54 @@ function choose(container, selector, key, value) {
 document.querySelectorAll("[data-snack]").forEach(button => button.addEventListener("click", () => {
   selectedSnack = button.dataset.snack;
   choose(document.getElementById("snackChoices"), "[data-snack]", "snack", selectedSnack);
-  document.getElementById("otherField").hidden = selectedSnack !== "Other";
-  if (selectedSnack === "Other") document.getElementById("otherSnack").focus();
-  updateProgress();
+  const other = document.getElementById("otherSnack");
+  other.hidden = selectedSnack !== "Other";
+  if (selectedSnack === "Other") other.focus();
+  statusBox.className = "status";
+  refresh();
 }));
 document.querySelectorAll("[data-price]").forEach(button => button.addEventListener("click", () => {
   selectedPrice = button.dataset.price;
   choose(document.getElementById("priceChoices"), "[data-price]", "price", selectedPrice);
-  updateProgress();
+  statusBox.className = "status";
+  refresh();
 }));
 document.querySelectorAll("[data-frequency]").forEach(button => button.addEventListener("click", () => {
   selectedFrequency = button.dataset.frequency;
   choose(document.getElementById("frequencyChoices"), "[data-frequency]", "frequency", selectedFrequency);
-  updateProgress();
+  statusBox.className = "status";
+  refresh();
 }));
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-  if (!selectedSnack || !selectedPrice || !selectedFrequency) {
-    showStatus("Choose a snack, a price, and how often you would buy it first.", "error"); return;
-  }
-  const otherSnack = document.getElementById("otherSnack").value.trim();
-  if (selectedSnack === "Other" && !otherSnack) {
-    showStatus("Tell us which snack you would like to see.", "error");
+backButton.addEventListener("click", () => { if (step > 1 && !sending) { step--; statusBox.className = "status"; refresh(); } });
+nextButton.addEventListener("click", async () => {
+  if (sending) return;
+  if (!currentValue()) { showStatus("Choose an option before continuing.", "error"); return; }
+  if (step === 1 && selectedSnack === "Other" && !document.getElementById("otherSnack").value.trim()) {
+    showStatus("Type the snack you'd like us to stock.", "error");
     document.getElementById("otherSnack").focus(); return;
   }
-  if (!window.supabase) { showStatus("The database library did not load. Check your connection and try again.", "error"); return; }
-  submitButton.disabled = true; submitButton.textContent = "Sending your vote…";
+  if (step < 3) { step++; statusBox.className = "status"; refresh(); return; }
+  if (!window.supabase) { showStatus("The database library didn't load. Check your connection and try again.", "error"); return; }
+  sending = true; refresh(); nextButton.textContent = "Sending your vote…";
   try {
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const { error } = await client.from("snack_survey_responses").insert({
-      snack: selectedSnack, price: selectedPrice, frequency: selectedFrequency, other_snack: selectedSnack === "Other" ? otherSnack : null
+      snack: selectedSnack, price: selectedPrice, frequency: selectedFrequency,
+      other_snack: selectedSnack === "Other" ? document.getElementById("otherSnack").value.trim() : null
     });
     if (error) throw error;
-    showStatus("Vote locked in! Thanks for helping pick the next snack. 🎉", "ok");
-    form.reset(); selectedSnack = selectedPrice = selectedFrequency = "";
-    document.querySelectorAll("[aria-pressed=true]").forEach(el => el.setAttribute("aria-pressed", "false"));
-    document.getElementById("otherField").hidden = true; updateProgress();
+    showStatus("VOTE LOCKED IN. Thanks for helping choose the next snack! ✳", "ok");
+    selectedSnack = selectedPrice = selectedFrequency = "";
+    document.getElementById("otherSnack").value = "";
+    document.querySelectorAll("[aria-pressed=true]").forEach(el => el.setAttribute("aria-pressed","false"));
+    step = 1; refresh();
+    nextButton.textContent = "Vote submitted ✓";
   } catch (error) {
     console.error("SnackDrop submission failed:", error);
-    showStatus("We couldn't save your vote. Check the Supabase table permissions and try again.", "error");
-  } finally { submitButton.disabled = false; submitButton.textContent = "Lock in my vote ↗"; }
+    showStatus("We couldn't save your vote. Check the database connection and permissions, then try again.", "error");
+  } finally { sending = false; refresh(); }
 });
+refresh();
 </script>
 </body>
 </html>
